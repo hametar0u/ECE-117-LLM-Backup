@@ -28,10 +28,7 @@ class Injector():
           raise ValueError('Your predefined error map is too small!')
         error_mask = self._error_map[torch.randperm(self._error_map.numel())][:param.numel()]
         error_mask = error_mask.reshape_as(param) #check
-        print(param[0][0])
         param.data = (param.view(torch.int) ^ error_mask).view(torch.float)
-        print('--------------------')
-        print(param[0][0])
   
   def inject_iterate(self, model: nn.Module) -> None:
     #to-do

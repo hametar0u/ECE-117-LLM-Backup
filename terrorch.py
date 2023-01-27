@@ -1,9 +1,6 @@
 import torch
 import torch.nn as nn
 
-#to-do: implement for 64-bit double precision
-#to-do: implement for training
-#to-do: implement sparse mat for large models
 
 class Injector():
   def __init__(self, *args, **kwargs) -> None:
@@ -14,7 +11,6 @@ class Injector():
     self._error_map_generate()
   
   def _error_map_generate(self) -> None:
-    
     self._error_map = torch.ones((self.size, torch.finfo(self.dtype).bits))
     self._error_map = (2 * torch.ones(32, dtype = torch.int)) ** torch.arange(0, 32, dtype = torch.int).expand_as(self._error_map)
     filter = nn.functional.dropout(torch.ones_like(self._error_map, dtype = torch.float), 1 - self.p)
@@ -31,9 +27,7 @@ class Injector():
         param.data = (param.view(torch.int) ^ error_mask).view(torch.float)
   
   def inject_iterate(self, model: nn.Module) -> None:
-    #to-do
     return NotImplementedError('Iterative error injection is not implemented yet.')
   
   def inject_sparse(self, model: nn.Module) -> None:
-    #to-do
     return NotImplementedError('Sparse error map is not implemented yet.')

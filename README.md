@@ -6,6 +6,7 @@
 - [X] Base error injection features using XOR operation
 - [X] Error injection to parameters based on given name
 - [X] Check on size of pre-defined error map 
+- [ ] Support on GPU
 - [ ] Iterative error injection through model
 - [ ] Support for 64-bit double precision
 - [ ] Using sparse mat for large models

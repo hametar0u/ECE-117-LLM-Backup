@@ -1,15 +1,23 @@
+import torch
+import torch.nn as nn
+
 class Injector():
   def __init__(self, *args, **kwargs) -> None:
     self.p = kwargs.get('p', 1e-10)
     self.dtype = kwargs.get('dtype', torch.float)
     self.size = kwargs.get('max_size')
     self.param_names = kwargs.get('param_names')
+    self.device = kwargs.get('device')
     self._error_map_generate()
   
+  @classmethod
+  def _argument_validate(self) -> None:
+    pass
+  
   def _error_map_generate(self) -> None:
-    self._error_map = torch.ones((self.size, torch.finfo(self.dtype).bits))
-    self._error_map = (2 * torch.ones(32, dtype = torch.int)) ** torch.arange(0, 32, dtype = torch.int).expand_as(self._error_map)
-    filter = nn.functional.dropout(torch.ones_like(self._error_map, dtype = torch.float), 1 - self.p)
+    self._error_map = torch.ones((self.size, torch.finfo(self.dtype).bits), device = self.device)
+    self._error_map = (2 * torch.ones(32, dtype = torch.int, device = self.device)) ** torch.arange(0, 32, dtype = torch.int, device = self.device).expand_as(self._error_map)
+    filter = nn.functional.dropout(torch.ones_like(self._error_map, dtype = torch.float, device = self.device), 1 - self.p)
     self._error_map = filter.int() * self._error_map 
     self._error_map = self._error_map.sum(dim = -1).int()
 

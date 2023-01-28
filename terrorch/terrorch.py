@@ -2,15 +2,21 @@ import torch
 import torch.nn as nn
 
 class Injector():
+  valid_dtypes = [torch.float, ]
+
   def __init__(self, *args, **kwargs) -> None:
     self.p = kwargs.get('p', 1e-10)
     self.dtype = kwargs.get('dtype', torch.float)
     self.param_names = kwargs.get('param_names')
     self.device = kwargs.get('device')
   
-  @classmethod
   def _argument_validate(self) -> None:
-    pass
+    if self.p <= 0 or self.p >= 1:
+      raise ValueError('Invalid probability of error injection.')
+    if self.dtype not in Injector.valid_dtypes:
+      raise ValueError('Invalid data types.')
+    if self.device is None:
+      raise ValueError('Please specify device for error injection.')
   
   def _error_map_generate(self) -> None:
     self._error_map = torch.ones((self.maxsize, torch.finfo(self.dtype).bits), device = self.device)

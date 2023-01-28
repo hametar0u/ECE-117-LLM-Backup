@@ -5,7 +5,6 @@ class Injector():
   def __init__(self, *args, **kwargs) -> None:
     self.p = kwargs.get('p', 1e-10)
     self.dtype = kwargs.get('dtype', torch.float)
-    self.size = kwargs.get('max_size')
     self.param_names = kwargs.get('param_names')
     self.device = kwargs.get('device')
     self._error_map_generate()
@@ -22,16 +21,19 @@ class Injector():
     self._error_map = self._error_map.sum(dim = -1).int()
 
   def inject(self, model: nn.Module) -> None:
+    self._errormap_size_detect(model)
     for param_name, param in model.named_parameters():
       if param_name.split('.')[-1] in self.param_names:
-        if param.numel() > self._error_map.numel():
-          raise ValueError('Your predefined error map is too small!')
         error_mask = self._error_map[torch.randperm(self._error_map.numel())][:param.numel()]
         error_mask = error_mask.reshape_as(param) #check
         param.data = (param.view(torch.int) ^ error_mask).view(torch.float)
   
-  def inject_iterate(self, model: nn.Module) -> None:
-    return NotImplementedError('Iterative error injection is not implemented yet.')
+  def _errormap_size_detect(self, model: nn.Module) -> None:
+    self.size = 0
+    for param_name, param in model.named_parameters():
+      if param_name.split('.')[-1] in self.param_names:
+        if param.numel() * torch.finfo(self.dtype).bits > self.size:
+          self.size = param.numel() * torch.finfo(self.dtype).bits
   
   def inject_sparse(self, model: nn.Module) -> None:
     return NotImplementedError('Sparse error map is not implemented yet.')

@@ -10,3 +10,5 @@
 - [ ] Implement for stuck-at-fault error (with customized error map).
 - [ ] Support error injection during training.
 - [ ] Argument validation
+## Contact
+- Dongning Ma, VU-DETAIL, email: dma2@villanova.edu 

@@ -4,9 +4,20 @@ import torch.nn as nn
 class Injector():
   valid_dtypes = [torch.float, ]
 
+  # @classmethod
+  # def _error_map_tensor(t: torch.Tensor, error_type = 'bit') -> torch.Tensor:
+  #   if error_type == 'bit':
+  #     self._error_map = (2 * torch.ones(32, dtype = torch.int, device = self.device)) ** torch.arange(0, 32, dtype = torch.int, device = self.device).expand_as(self._error_map)
+  #     filter = nn.functional.dropout(torch.ones_like(self._error_map, dtype = torch.float, device = self.device), 1 - self.p)
+  #     self._error_map = filter.int() * self._error_map 
+  #     self._error_map = self._error_map.sum(dim = -1).int()
+  #   elif error_type == 'random_value':
+  #     raise NotImplementedError('Random value error model is not yet implemented.')
+
   def __init__(self, *args, **kwargs) -> None:
     self.p = kwargs.get('p', 1e-10)
     self.dtype = kwargs.get('dtype', torch.float)
+    self.dtype_bitwidth = torch.finfo(self.dtype).bits
     self.param_names = kwargs.get('param_names')
     self.device = kwargs.get('device')
   
@@ -22,11 +33,11 @@ class Injector():
     self.maxsize = 0
     for param_name, param in model.named_parameters():
       if param_name.split('.')[-1] in self.param_names:
-        if param.numel() * torch.finfo(self.dtype).bits > self.maxsize:
-          self.maxsize = param.numel() * torch.finfo(self.dtype).bits
+        if param.numel() * self.dtype_bitwidth > self.maxsize:
+          self.maxsize = param.numel() * self.dtype_bitwidth
 
   def _error_map_generate(self) -> None:
-    self._error_map = torch.ones((self.maxsize, torch.finfo(self.dtype).bits), device = self.device)
+    self._error_map = torch.ones((self.maxsize, self.dtype_bitwidth), device = self.device)
     self._error_map = (2 * torch.ones(32, dtype = torch.int, device = self.device)) ** torch.arange(0, 32, dtype = torch.int, device = self.device).expand_as(self._error_map)
     filter = nn.functional.dropout(torch.ones_like(self._error_map, dtype = torch.float, device = self.device), 1 - self.p)
     self._error_map = filter.int() * self._error_map 
@@ -65,10 +76,10 @@ class Injector():
 #     self._error_maps = {}
 #     raise Warning('Error injection for stuck-at-fault errors is extremely memory-intensive and thus not recommended to run on GPU!')
   
-#   def _error_map_generate(self, model: nn.Module) -> None:
+#   def _error_maps_generate(self, model: nn.Module) -> None:
 #     for param_name, param in model.named_parameters():
 #       if param_name.split('.')[-1] in self.param_names:
-#         self._error_map['param_name'] = torch.ones((*param.shape, torch.finfo(self.dtype).bits))
+#         self._error_map['param_name'] = torch.ones((*param.shape, self.dtype_bitwidth))
 
 #   def inject(self, model: nn.Module) -> None:
 #     self._errormap_size_detect(model)

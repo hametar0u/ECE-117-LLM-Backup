@@ -40,6 +40,19 @@ class Injector():
       if param_name.split('.')[-1] in self.param_names:
         if param.numel() * torch.finfo(self.dtype).bits > self.maxsize:
           self.maxsize = param.numel() * torch.finfo(self.dtype).bits
+
+  def save_errormap(self, path, sparse = False) -> None:
+    maptensor = self._error_map.clone()  
+    if self.device != torch.device('cpu'):
+      maptensor = maptensor.cpu()
+    if sparse == True:
+      maptensor = maptensor.to_sparse() 
+    torch.save(maptensor, path)
   
-  def inject_sparse(self, model: nn.Module) -> None:
-    return NotImplementedError('Sparse error map is not implemented yet.')
+  def load_errormap(self, path, sparse = False) -> None:
+    maptensor = torch.load(path)
+    if self.device != torch.device('cpu'):
+      maptensor = maptensor.to(self.device)
+    if sparse == True:
+      maptensor = maptensor.to_dense()
+    self._error_map = maptensor.clone()

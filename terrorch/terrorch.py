@@ -81,7 +81,7 @@ class Injector():
           param.data = (param.view(torch.int) ^ error_mask).view(torch.float)
     elif self.error_type == 'stuck_at_fault':
       for param_name, param in model.named_parameters():
-        if param_name in self.param_names:
+        if param_name in self._error_maps.keys():
           error_mask = self._error_maps[param_name]
           param.data = (param.view(torch.int) ^ error_mask).view(torch.float)
     if self.verbose == True:

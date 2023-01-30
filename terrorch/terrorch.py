@@ -8,7 +8,18 @@ class Injector():
   valid_error_types = ['random', 'stuck_at_fault']
 
   @classmethod
-  def _error_map_generate(cls, injectee_shape, dtype_bitwidth, device, p) -> torch.Tensor:
+  def _error_map_generate(cls, injectee_shape: tuple, dtype_bitwidth: int, device: torch.device, p: float) -> torch.Tensor:
+    """_summary_
+
+    Args:
+        injectee_shape (tuple): _description_
+        dtype_bitwidth (int): _description_
+        device (torch.device): _description_
+        p (float): _description_
+
+    Returns:
+        torch.Tensor: _description_
+    """
     error_map = (2 * torch.ones((*injectee_shape, dtype_bitwidth), dtype = torch.int, device = device)) ** torch.arange(0, dtype_bitwidth, dtype = torch.int, device = device).expand((*injectee_shape, dtype_bitwidth))
     filter = nn.functional.dropout(torch.ones_like(error_map , dtype = torch.float, device = device), 1 - p)
     error_map  = (filter.int() * error_map).sum(dim = -1).int()
@@ -22,8 +33,18 @@ class Injector():
       verbose: bool = False,
       error_model = 'bit',
       error_type = 'random',
-
       ) -> None:
+    """_summary_
+
+    Args:
+        p (float, optional): _description_. Defaults to 1e-10.
+        dtype (torch.dtype, optional): _description_. Defaults to torch.float.
+        param_names (list, optional): _description_. Defaults to ['weight'].
+        device (torch.device, optional): _description_. Defaults to torch.device('cpu').
+        verbose (bool, optional): _description_. Defaults to False.
+        error_model (str, optional): _description_. Defaults to 'bit'.
+        error_type (str, optional): _description_. Defaults to 'random'.
+    """
 
     self.p = p
     self.dtype = dtype
@@ -54,6 +75,11 @@ class Injector():
 
   
   def _error_map_allocate(self, model: nn.Module) -> None:
+    """_summary_
+
+    Args:
+        model (nn.Module): _description_
+    """
     if self.error_type == 'random':
       self._maxsize = 0
       for param_name, param in model.named_parameters():
@@ -71,6 +97,11 @@ class Injector():
       warnings.warn('Stuck-at-fault error injection is extremely memory-intensive. Use with caution!')
 
   def inject(self, model: nn.Module) -> None:
+    """_summary_
+
+    Args:
+        model (nn.Module): _description_
+    """
     self._error_map_allocate(model)
     if self.error_type == 'random':
       for param_name, param in model.named_parameters():
@@ -89,7 +120,13 @@ class Injector():
       print('The following parameters have been injected:')
       print(injected_params)
 
-  def save_error_map(self, path, sparse = False) -> None:
+  def save_error_map(self, path: str, sparse = False) -> None:
+    """_summary_
+
+    Args:
+        path (str): _description_
+        sparse (bool, optional): _description_. Defaults to False.
+    """
     error_maps = self._error_maps.copy()
     for _, v in error_maps.items():
       if self.device != torch.device('cpu'):
@@ -101,7 +138,13 @@ class Injector():
     if self.verbose == True:
       print('Error map saved to:', path)
   
-  def load_error_map(self, path, sparse = False) -> None:
+  def load_error_map(self, path: str, sparse = False) -> None:
+    """_summary_
+
+    Args:
+        path (str): _description_
+        sparse (bool, optional): _description_. Defaults to False.
+    """
     error_maps = torch.load(path)
     for _, v in error_maps.items():
       if self.device != torch.device('cpu'):

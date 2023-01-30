@@ -1,3 +1,4 @@
+import warnings
 import torch
 import torch.nn as nn
 
@@ -8,7 +9,7 @@ class Injector():
 
   @classmethod
   def _error_map_generate(cls, injectee_shape, dtype_bitwidth, device, p) -> torch.Tensor:
-    error_map = (2 * torch.ones((injectee_shape, dtype_bitwidth), dtype = torch.int, device = device)) ** torch.arange(0, dtype_bitwidth, dtype = torch.int, device = device).expand((injectee_shape, dtype_bitwidth))
+    error_map = (2 * torch.ones((*injectee_shape, dtype_bitwidth), dtype = torch.int, device = device)) ** torch.arange(0, dtype_bitwidth, dtype = torch.int, device = device).expand((*injectee_shape, dtype_bitwidth))
     filter = nn.functional.dropout(torch.ones_like(error_map , dtype = torch.float, device = device), 1 - p)
     error_map  = (filter.int() * error_map).sum(dim = -1).int()
     return error_map
@@ -45,6 +46,12 @@ class Injector():
       raise ValueError('Unknown error model. Currently support:', *Injector.valid_error_models)
     if self.error_type not in Injector.valid_error_types:
       raise ValueError('Unknown error type. Currently support:', *Injector.valid_error_types)
+    if self.verbose == True:
+      print('Injector initialized.\nError probability:', self.p)
+      print('Data type:', self.dtype)
+      print('Error model:', self.error_model)
+      print('Error type:', self.error_type)
+
   
   def _error_map_allocate(self, model: nn.Module) -> None:
     if self.error_type == 'random':
@@ -53,16 +60,15 @@ class Injector():
         if param_name.split('.')[-1] in self.param_names:
           if param.numel() * self._dtype_bitwidth > self._maxsize:
             self._maxsize = param.numel() * self._dtype_bitwidth
-
-      injectee_shape = self._maxsize
+      injectee_shape = (self._maxsize,)
       self._error_maps['universal'] = Injector._error_map_generate(injectee_shape, self._dtype_bitwidth, self.device, self.p)
 
     elif self.error_type == 'stuck_at_fault':
       for param_name, param in model.named_parameters():
         if param_name.split('.')[-1] in self.param_names:
-          injectee_shape = torch.zeros_like(param)
+          injectee_shape = param.shape
           self._error_maps[param_name] = Injector._error_map_generate(injectee_shape, self._dtype_bitwidth, self.device, self.p)
-      raise Warning('Stuck-at-fault error injection is extremely memory-intensive. Use with caution!')
+      warnings.warn('Stuck-at-fault error injection is extremely memory-intensive. Use with caution!')
 
   def inject(self, model: nn.Module) -> None:
     self._error_map_allocate(model)
@@ -78,6 +84,10 @@ class Injector():
         if param_name in self.param_names:
           error_mask = self._error_maps[param_name]
           param.data = (param.view(torch.int) ^ error_mask).view(torch.float)
+    if self.verbose == True:
+      injected_params = self._error_maps.keys()
+      print('The following parameters have been injected:')
+      print(injected_params)
 
   def save_error_map(self, path, sparse = False) -> None:
     error_maps = self._error_maps.copy()
@@ -88,6 +98,8 @@ class Injector():
         v = v.to_sparse()
     torch.save(error_maps, path)
     del error_maps
+    if self.verbose == True:
+      print('Error map saved to:', path)
   
   def load_error_map(self, path, sparse = False) -> None:
     error_maps = torch.load(path)
@@ -98,3 +110,5 @@ class Injector():
         v = v.to_dense()
     self._error_maps = error_maps.copy()
     del error_maps
+    if self.verbose == True:
+      print('Error map loaded from:', path)

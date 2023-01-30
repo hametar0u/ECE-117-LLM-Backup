@@ -6,7 +6,7 @@
 - [X] Allow users to determine the device of generating and injecting errors.
 - [X] Automatic error map size allocation by iterating through model.
 - [X] Support for save and load of error maps with option to save as sparse tensor.
-- [ ] Implement for stuck-at-fault error (with customized error map).
+- [X] Implement for stuck-at-fault error (with customized error map).
 - [ ] Support for random value error.
 - [ ] Support for 64-bit double precision.
 - [ ] Support error injection during training.

@@ -9,16 +9,16 @@ class Injector():
 
   @classmethod
   def _error_map_generate(cls, injectee_shape: tuple, dtype_bitwidth: int, device: torch.device, p: float) -> torch.Tensor:
-    """_summary_
+    """Injecting errors into the tensor based on the given parameters.
 
     Args:
-        injectee_shape (tuple): _description_
-        dtype_bitwidth (int): _description_
-        device (torch.device): _description_
-        p (float): _description_
+        injectee_shape (tuple): The shape of the tensor that is the target of the error injection
+        dtype_bitwidth (int): The bits that the each element in the provided data type occupies.
+        device (torch.device): The device on which the error injection is carried out.
+        p (float): The probability of the error.
 
     Returns:
-        torch.Tensor: _description_
+        torch.Tensor: The tensor with error injected.
     """
     error_map = (2 * torch.ones((*injectee_shape, dtype_bitwidth), dtype = torch.int, device = device)) ** torch.arange(0, dtype_bitwidth, dtype = torch.int, device = device).expand((*injectee_shape, dtype_bitwidth))
     filter = nn.functional.dropout(torch.ones_like(error_map , dtype = torch.float, device = device), 1 - p)
@@ -34,16 +34,16 @@ class Injector():
       error_model = 'bit',
       error_type = 'random',
       ) -> None:
-    """_summary_
+    """The initialization of the Injector class.
 
     Args:
-        p (float, optional): _description_. Defaults to 1e-10.
-        dtype (torch.dtype, optional): _description_. Defaults to torch.float.
-        param_names (list, optional): _description_. Defaults to ['weight'].
-        device (torch.device, optional): _description_. Defaults to torch.device('cpu').
-        verbose (bool, optional): _description_. Defaults to False.
-        error_model (str, optional): _description_. Defaults to 'bit'.
-        error_type (str, optional): _description_. Defaults to 'random'.
+        p (float, optional): The probability of the error. Defaults to 1e-10.
+        dtype (torch.dtype, optional): The data type of the target model. Defaults to torch.float.
+        param_names (list(str), optional): The parameters that wished to be injected with error. Defaults to ['weight'].
+        device (torch.device, optional): The device on which the error injection is carried out. Defaults to torch.device('cpu').
+        verbose (bool, optional): Setting True to print information about error injection. Defaults to False.
+        error_model (str, optional): The error model. Defaults to 'bit'.
+        error_type (str, optional): The type of the error. Defaults to 'random'.
     """
 
     self.p = p
@@ -62,11 +62,11 @@ class Injector():
     if self.p <= 0 or self.p >= 1:
       raise ValueError('Invalid probability of error injection.')
     if self.dtype not in Injector.valid_dtypes:
-      raise ValueError('Invalid data types. Currently support:', *Injector.valid_dtypes)
+      raise ValueError('Invalid data types.')
     if self.error_model not in Injector.valid_error_models:
-      raise ValueError('Unknown error model. Currently support:', *Injector.valid_error_models)
+      raise ValueError('Unknown error model.')
     if self.error_type not in Injector.valid_error_types:
-      raise ValueError('Unknown error type. Currently support:', *Injector.valid_error_types)
+      raise ValueError('Unknown error type.')
     if self.verbose == True:
       print('Injector initialized.\nError probability:', self.p)
       print('Data type:', self.dtype)
@@ -75,10 +75,10 @@ class Injector():
 
   
   def _error_map_allocate(self, model: nn.Module) -> None:
-    """_summary_
+    """Iterative through model parameters and allocate the error maps for injection.
 
     Args:
-        model (nn.Module): _description_
+        model (nn.Module): The target model for error injection.
     """
     if self.error_type == 'random':
       self._maxsize = 0
@@ -97,10 +97,10 @@ class Injector():
       warnings.warn('Stuck-at-fault error injection is extremely memory-intensive. Use with caution!')
 
   def inject(self, model: nn.Module) -> None:
-    """_summary_
+    """Injecting the errors into the model
 
     Args:
-        model (nn.Module): _description_
+        model (nn.Module): The target model for error injection.
     """
     self._error_map_allocate(model)
     if self.error_type == 'random':
@@ -121,11 +121,11 @@ class Injector():
       print(injected_params)
 
   def save_error_map(self, path: str, sparse = False) -> None:
-    """_summary_
+    """Save error map as a file.
 
     Args:
-        path (str): _description_
-        sparse (bool, optional): _description_. Defaults to False.
+        path (str): The path for saving the error map file.
+        sparse (bool, optional): Setting True for saving under sparse format of tensor. Defaults to False.
     """
     error_maps = self._error_maps.copy()
     for _, v in error_maps.items():
@@ -139,11 +139,11 @@ class Injector():
       print('Error map saved to:', path)
   
   def load_error_map(self, path: str, sparse = False) -> None:
-    """_summary_
+    """Load error map from a file.
 
     Args:
-        path (str): _description_
-        sparse (bool, optional): _description_. Defaults to False.
+        path (str): The path of the error map file to load.
+        sparse (bool, optional): Setting True for loading error maps saved under sparse format of tensor. Defaults to False.
     """
     error_maps = torch.load(path)
     for _, v in error_maps.items():

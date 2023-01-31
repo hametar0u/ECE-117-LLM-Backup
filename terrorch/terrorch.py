@@ -20,9 +20,12 @@ class Injector():
     Returns:
         torch.Tensor: The tensor with error injected.
     """
+    print(injectee_shape)
     error_map = (2 * torch.ones((*injectee_shape, dtype_bitwidth), dtype = torch.int, device = device)) ** torch.arange(0, dtype_bitwidth, dtype = torch.int, device = device).expand((*injectee_shape, dtype_bitwidth))
     filter = nn.functional.dropout(torch.ones_like(error_map , dtype = torch.float, device = device), 1 - p)
+    print(error_map.shape)
     error_map  = (filter.int() * error_map).sum(dim = -1).int()
+    print(error_map.shape)
     return error_map
 
   def __init__(self, 
@@ -84,8 +87,8 @@ class Injector():
       self._maxsize = 0
       for param_name, param in model.named_parameters():
         if param_name.split('.')[-1] in self.param_names:
-          if param.numel() * self._dtype_bitwidth > self._maxsize:
-            self._maxsize = param.numel() * self._dtype_bitwidth
+          if param.numel() > self._maxsize:
+            self._maxsize = param.numel()
       injectee_shape = (self._maxsize,)
       self._error_maps['universal'] = Injector._error_map_generate(injectee_shape, self._dtype_bitwidth, self.device, self.p)
 

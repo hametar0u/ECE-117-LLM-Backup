@@ -22,7 +22,7 @@ class Injector():
     """
     error_map = (2 * torch.ones((*injectee_shape, dtype_bitwidth), dtype = torch.int, device = device)) ** torch.arange(0, dtype_bitwidth, dtype = torch.int, device = device).expand((*injectee_shape, dtype_bitwidth))
     filter = nn.functional.dropout(torch.ones_like(error_map , dtype = torch.float, device = device), 1 - p)
-    error_map  = (filter.int() * error_map).sum(dim = -1).int()
+    error_map  = (p * filter.int() * error_map).sum(dim = -1).int()
     return error_map
 
   def __init__(self, 

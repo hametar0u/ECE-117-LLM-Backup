@@ -13,3 +13,4 @@
 - [ ] Support for quantized data types.
 ## Contact
 - Dongning Ma, VU-DETAIL, email: dma2@villanova.edu 
+- Richard Wang, VU-DETAIL, email: rwang8@villanova.edu 

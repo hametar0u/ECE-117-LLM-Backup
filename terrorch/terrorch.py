@@ -20,12 +20,9 @@ class Injector():
     Returns:
         torch.Tensor: The tensor with error injected.
     """
-    print(injectee_shape)
     error_map = (2 * torch.ones((*injectee_shape, dtype_bitwidth), dtype = torch.int, device = device)) ** torch.arange(0, dtype_bitwidth, dtype = torch.int, device = device).expand((*injectee_shape, dtype_bitwidth))
     filter = nn.functional.dropout(torch.ones_like(error_map , dtype = torch.float, device = device), 1 - p)
-    print(error_map.shape)
     error_map  = (filter.int() * error_map).sum(dim = -1).int()
-    print(error_map.shape)
     return error_map
 
   def __init__(self, 

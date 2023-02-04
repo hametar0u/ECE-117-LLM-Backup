@@ -9,7 +9,7 @@ class Injector():
 
   @classmethod
   def _error_map_generate(cls, injectee_shape: tuple, dtype_bitwidth: int, device: torch.device, p: float) -> torch.Tensor:
-    """Injecting errors into the tensor based on the given parameters.
+    """Injecting bit errors into the tensor based on the given parameters.
 
     Args:
         injectee_shape (tuple): The shape of the tensor that is the target of the error injection
@@ -21,9 +21,10 @@ class Injector():
         torch.Tensor: The tensor with error injected.
     """
     error_map = (2 * torch.ones((*injectee_shape, dtype_bitwidth), dtype = torch.int, device = device)) ** torch.arange(0, dtype_bitwidth, dtype = torch.int, device = device).expand((*injectee_shape, dtype_bitwidth))
-    filter = nn.functional.dropout(torch.ones_like(error_map , dtype = torch.float, device = device), 1 - p)
-    error_map  = (p * filter.int() * error_map).sum(dim = -1).int()
-    return error_map
+    filter = (p * nn.functional.dropout(torch.ones_like(error_map , dtype = torch.float, device = device), 1 - p)).int()
+    error_count = filter.sum(dim = -1)
+    error_map  = (filter * error_map).sum(dim = -1).int()
+    return error_map, error_count
 
   def __init__(self, 
       p: float = 1e-10, 
@@ -57,6 +58,7 @@ class Injector():
     self._argument_validate()
     self._dtype_bitwidth = torch.finfo(self.dtype).bits
     self._error_maps = {}
+    self._error_count = {}
   
   def _argument_validate(self) -> None:
     if self.p <= 0 or self.p >= 1:
@@ -87,13 +89,13 @@ class Injector():
           if param.numel() > self._maxsize:
             self._maxsize = param.numel()
       injectee_shape = (self._maxsize,)
-      self._error_maps['universal'] = Injector._error_map_generate(injectee_shape, self._dtype_bitwidth, self.device, self.p)
+      self._error_maps['universal'], self._error_count['universal'] = Injector._error_map_generate(injectee_shape, self._dtype_bitwidth, self.device, self.p)
 
     elif self.error_type == 'stuck_at_fault':
       for param_name, param in model.named_parameters():
         if param_name.split('.')[-1] in self.param_names:
           injectee_shape = param.shape
-          self._error_maps[param_name] = Injector._error_map_generate(injectee_shape, self._dtype_bitwidth, self.device, self.p)
+          self._error_maps[param_name], self._error_count[param_name] = Injector._error_map_generate(injectee_shape, self._dtype_bitwidth, self.device, self.p)
       warnings.warn('Stuck-at-fault error injection is extremely memory-intensive. Use with caution!')
 
   def inject(self, model: nn.Module) -> None:
@@ -103,22 +105,41 @@ class Injector():
         model (nn.Module): The target model for error injection.
     """
     self._error_map_allocate(model)
+    error_count_number = 0
+    param_count_number = 0
+
     if self.error_type == 'random':
       for param_name, param in model.named_parameters():
         if param_name.split('.')[-1] in self.param_names:
           error_map = self._error_maps['universal']
-          error_mask = error_map[torch.randperm(error_map.numel(), device = self.device)][:param.numel()]
+          error_count = self._error_count['universal']
+
+          idx_perm = torch.randperm(error_map.numel(), device = self.device)
+
+          error_mask = error_map[idx_perm][:param.numel()]
+          error_count_injected = error_count[idx_perm][:param.numel()]
+          
           error_mask = error_mask.reshape_as(param)
           param.data = (param.view(torch.int) ^ error_mask).view(torch.float)
+          error_count_number += error_count_injected.sum()
+          param_count_number += param.numel()
+
     elif self.error_type == 'stuck_at_fault':
       for param_name, param in model.named_parameters():
         if param_name in self._error_maps.keys():
           error_mask = self._error_maps[param_name]
+
+          error_count_number += self._error_count[param_name].sum()
+          param_count_number += self._error_maps[param_name].numel()
+          
           param.data = (param.view(torch.int) ^ error_mask).view(torch.float)
+
     if self.verbose == True:
       injected_params = self._error_maps.keys()
       print('The following parameters have been injected:')
       print(injected_params)
+      print('Total number of errors injected:', error_count_number)
+      print('Total number of parameters:', param_count_number)
 
   def save_error_map(self, path: str, sparse = False) -> None:
     """Save error map as a file.

@@ -1,4 +1,5 @@
 import warnings
+import time
 import torch
 import torch.nn as nn
 
@@ -46,7 +47,6 @@ class Injector():
         error_model (str, optional): The error model. Defaults to 'bit'.
         error_type (str, optional): The type of the error. Defaults to 'random'.
     """
-
     self.p = p
     self.dtype = dtype
     self.param_names = param_names
@@ -75,28 +75,16 @@ class Injector():
       print('Error model:', self.error_model)
       print('Error type:', self.error_type)
 
-  
   def _error_map_allocate(self, model: nn.Module) -> None:
     """Iterative through model parameters and allocate the error maps for injection.
 
     Args:
         model (nn.Module): The target model for error injection.
     """
-    if self.error_type == 'random':
-      self._maxsize = 0
-      for param_name, param in model.named_parameters():
-        if param_name.split('.')[-1] in self.param_names:
-          if param.numel() > self._maxsize:
-            self._maxsize = param.numel()
-      injectee_shape = (self._maxsize,)
-      self._error_maps['universal'], self._error_count['universal'] = Injector._error_map_generate(injectee_shape, self._dtype_bitwidth, self.device, self.p)
-
-    elif self.error_type == 'stuck_at_fault':
-      for param_name, param in model.named_parameters():
-        if param_name.split('.')[-1] in self.param_names:
-          injectee_shape = param.shape
-          self._error_maps[param_name], self._error_count[param_name] = Injector._error_map_generate(injectee_shape, self._dtype_bitwidth, self.device, self.p)
-      warnings.warn('Stuck-at-fault error injection is extremely memory-intensive. Use with caution!')
+    for param_name, param in model.named_parameters():
+      if param_name.split('.')[-1] in self.param_names:
+        injectee_shape = param.shape
+        self._error_maps[param_name], self._error_count[param_name] = Injector._error_map_generate(injectee_shape, self._dtype_bitwidth, self.device, self.p)
 
   def inject(self, model: nn.Module) -> None:
     """Injecting the errors into the model
@@ -104,35 +92,17 @@ class Injector():
     Args:
         model (nn.Module): The target model for error injection.
     """
+    start_time = time.time()
     self._error_map_allocate(model)
     error_count_number = 0
     param_count_number = 0
 
-    if self.error_type == 'random':
-      for param_name, param in model.named_parameters():
-        if param_name.split('.')[-1] in self.param_names:
-          error_map = self._error_maps['universal']
-          error_count = self._error_count['universal']
-
-          idx_perm = torch.randperm(error_map.numel(), device = self.device)
-
-          error_mask = error_map[idx_perm][:param.numel()]
-          error_count_injected = error_count[idx_perm][:param.numel()]
-          
-          error_mask = error_mask.reshape_as(param)
-          param.data = (param.view(torch.int) ^ error_mask).view(torch.float)
-          error_count_number += error_count_injected.sum()
-          param_count_number += param.numel()
-
-    elif self.error_type == 'stuck_at_fault':
-      for param_name, param in model.named_parameters():
-        if param_name in self._error_maps.keys():
-          error_mask = self._error_maps[param_name]
-
-          error_count_number += self._error_count[param_name].sum()
-          param_count_number += self._error_maps[param_name].numel()
-          
-          param.data = (param.view(torch.int) ^ error_mask).view(torch.float)
+    for param_name, param in model.named_parameters():
+      if param_name in self._error_maps.keys():
+        error_mask = self._error_maps[param_name]
+        error_count_number += self._error_count[param_name].sum()
+        param_count_number += self._error_maps[param_name].numel()
+        param.data = (param.view(torch.int) ^ error_mask).view(torch.float)
 
     if self.verbose == True:
       injected_params = self._error_maps.keys()
@@ -140,6 +110,7 @@ class Injector():
       print(injected_params)
       print('Total number of errors injected:', error_count_number)
       print('Total number of parameters:', param_count_number)
+      print('Time spent on error injection (second):', time.time() - start_time)
 
   def save_error_map(self, path: str, sparse = False) -> None:
     """Save error map as a file.

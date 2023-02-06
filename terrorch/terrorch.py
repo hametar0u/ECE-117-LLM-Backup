@@ -6,7 +6,6 @@ import torch.nn as nn
 class Injector():
   valid_dtypes = [torch.float, ]
   valid_error_models = ['bit', 'value']
-  valid_error_types = ['random', 'stuck_at_fault']
 
   @classmethod
   def _error_map_generate(cls, injectee_shape: tuple, dtype_bitwidth: int, device: torch.device, p: float) -> torch.Tensor:
@@ -34,7 +33,6 @@ class Injector():
       device: torch.device = torch.device('cpu'),
       verbose: bool = False,
       error_model = 'bit',
-      error_type = 'random',
       ) -> None:
     """The initialization of the Injector class.
 
@@ -45,7 +43,6 @@ class Injector():
         device (torch.device, optional): The device on which the error injection is carried out. Defaults to torch.device('cpu').
         verbose (bool, optional): Setting True to print information about error injection. Defaults to False.
         error_model (str, optional): The error model. Defaults to 'bit'.
-        error_type (str, optional): The type of the error. Defaults to 'random'.
     """
     self.p = p
     self.dtype = dtype
@@ -53,7 +50,6 @@ class Injector():
     self.device = device
     self.verbose = verbose
     self.error_model = error_model
-    self.error_type = error_type
 
     self._argument_validate()
     self._dtype_bitwidth = torch.finfo(self.dtype).bits
@@ -67,13 +63,10 @@ class Injector():
       raise ValueError('Invalid data types.')
     if self.error_model not in Injector.valid_error_models:
       raise ValueError('Unknown error model.')
-    if self.error_type not in Injector.valid_error_types:
-      raise ValueError('Unknown error type.')
     if self.verbose == True:
       print('Injector initialized.\nError probability:', self.p)
       print('Data type:', self.dtype)
       print('Error model:', self.error_model)
-      print('Error type:', self.error_type)
 
   def _error_map_allocate(self, model: nn.Module) -> None:
     """Iterative through model parameters and allocate the error maps for injection.

@@ -20,11 +20,27 @@ class Injector():
     Returns:
         torch.Tensor: The tensor with error injected.
     """
-    error_map = (2 * torch.ones((*injectee_shape, dtype_bitwidth), dtype = torch.int, device = device)) ** torch.arange(0, dtype_bitwidth, dtype = torch.int, device = device).expand((*injectee_shape, dtype_bitwidth))
+    error_map = (2 * torch.ones((*injectee_shape, dtype_bitwidth), dtype = torch.int, device = device)) ** torch.arange(0, dtype_bitwidth, dtype = torch.int, device = device).flip(dims = (-1, )).expand((*injectee_shape, dtype_bitwidth))
     filter = (p * nn.functional.dropout(torch.ones_like(error_map , dtype = torch.float, device = device), 1 - p)).int()
     error_count = filter.sum(dim = -1)
-    error_map  = (filter * error_map).sum(dim = -1).int()
+    error_map = (filter * error_map).sum(dim = -1).int()
     return error_map, error_count
+
+  @classmethod
+  def _error_map_generate_v(cls, injectee_shape: tuple, dtype_bitwidth: int, device: torch.device, p: float) -> torch.Tensor:
+    """Injecting randome value errors into the tensor based on the given parameters.
+
+    Args:
+        injectee_shape (tuple): The shape of the tensor that is the target of the error injection
+        dtype_bitwidth (int): The bits that the each element in the provided data type occupies.
+        device (torch.device): The device on which the error injection is carried out.
+        p (float): The probability of the error.
+
+    Returns:
+        torch.Tensor: The tensor with error injected.
+    """
+    raise NotImplementedError('Random value error model is not implemented yet.')
+
 
   def __init__(self, 
       p: float = 1e-10, 
@@ -75,9 +91,11 @@ class Injector():
         model (nn.Module): The target model for error injection.
     """
     for param_name, param in model.named_parameters():
-      if param_name.split('.')[-1] in self.param_names:
-        injectee_shape = param.shape
-        self._error_maps[param_name], self._error_count[param_name] = Injector._error_map_generate(injectee_shape, self._dtype_bitwidth, self.device, self.p)
+      for each_param in self.param_names:
+        if each_param in param_name:
+          injectee_shape = param.shape
+          self._error_maps[param_name], self._error_count[param_name] = Injector._error_map_generate(injectee_shape, self._dtype_bitwidth, self.device, self.p)
+          break
 
   def inject(self, model: nn.Module) -> None:
     """Injecting the errors into the model

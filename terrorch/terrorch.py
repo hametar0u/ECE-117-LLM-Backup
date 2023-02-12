@@ -1,6 +1,5 @@
 import time
 import torch
-import warnings
 import torch.nn as nn
 
 class Injector():

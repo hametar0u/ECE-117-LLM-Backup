@@ -11,8 +11,6 @@
 - [ ] Support for 64-bit double precision.
 - [ ] Support error injection during training.
 - [ ] Support for quantized data types.
-## Known Issues
-- Error vanishing issues of allocating error map based on partial parameters of the model when error rate is small. 
 ## Contact
 - Dongning Ma, VU-DETAIL, email: dma2@villanova.edu 
 - Richard Wang, VU-DETAIL, email: rwang8@villanova.edu 

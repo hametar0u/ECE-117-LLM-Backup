@@ -1,6 +1,6 @@
-import warnings
 import time
 import torch
+import warnings
 import torch.nn as nn
 
 class Injector():
@@ -49,6 +49,7 @@ class Injector():
       device: torch.device = torch.device('cpu'),
       verbose: bool = False,
       error_model = 'bit',
+      error_type = 'random',
       ) -> None:
     """The initialization of the Injector class.
 
@@ -90,12 +91,20 @@ class Injector():
     Args:
         model (nn.Module): The target model for error injection.
     """
-    for param_name, param in model.named_parameters():
-      for each_param in self.param_names:
-        if each_param in param_name:
-          injectee_shape = param.shape
-          self._error_maps[param_name], self._error_count[param_name] = Injector._error_map_generate(injectee_shape, self._dtype_bitwidth, self.device, self.p)
-          break
+    if type(model) == dict:
+      for param_name, param in model.items():
+        for each_param in self.param_names:
+          if each_param in param_name:
+            injectee_shape = param.shape
+            self._error_maps[param_name], self._error_count[param_name] = Injector._error_map_generate(injectee_shape, self._dtype_bitwidth, self.device, self.p)
+            break
+    else:
+      for param_name, param in model.named_parameters():
+        for each_param in self.param_names:
+          if each_param in param_name:
+            injectee_shape = param.shape
+            self._error_maps[param_name], self._error_count[param_name] = Injector._error_map_generate(injectee_shape, self._dtype_bitwidth, self.device, self.p)
+            break
 
   def inject(self, model: nn.Module) -> None:
     """Injecting the errors into the model
@@ -107,13 +116,21 @@ class Injector():
     self._error_map_allocate(model)
     error_count_number = 0
     param_count_number = 0
-
-    for param_name, param in model.named_parameters():
-      if param_name in self._error_maps.keys():
-        error_mask = self._error_maps[param_name]
-        error_count_number += self._error_count[param_name].sum()
-        param_count_number += self._error_maps[param_name].numel()
-        param.data = (param.view(torch.int) ^ error_mask).view(torch.float)
+    
+    if type(model) == dict:
+      for param_name, param in model.items():
+        if param_name in self._error_maps.keys():
+          error_mask = self._error_maps[param_name]
+          error_count_number += self._error_count[param_name].sum()
+          param_count_number += self._error_maps[param_name].numel()
+          param.data = (param.view(torch.int) ^ error_mask).view(torch.float)
+    else:
+      for param_name, param in model.named_parameters():
+        if param_name in self._error_maps.keys():
+          error_mask = self._error_maps[param_name]
+          error_count_number += self._error_count[param_name].sum()
+          param_count_number += self._error_maps[param_name].numel()
+          param.data = (param.view(torch.int) ^ error_mask).view(torch.float)
 
     if self.verbose == True:
       injected_params = self._error_maps.keys()

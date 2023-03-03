@@ -1,10 +1,12 @@
 import time
 import torch
 import torch.nn as nn
+import deterrorch
 
 class Injector():
   valid_dtypes = [torch.float, ]
   valid_error_models = ['bit', 'value']
+  valid_mitigations = ['SBP', 'clip']
 
   @classmethod
   def _error_map_generate(cls, injectee_shape: tuple, dtype_bitwidth: int, device: torch.device, p: float) -> torch.Tensor:
@@ -48,7 +50,7 @@ class Injector():
       device: torch.device = torch.device('cpu'),
       verbose: bool = False,
       error_model = 'bit',
-      error_type = 'random',
+      mitigation = None,
       ) -> None:
     """The initialization of the Injector class.
 
@@ -66,6 +68,7 @@ class Injector():
     self.device = device
     self.verbose = verbose
     self.error_model = error_model
+    self.mitigation = mitigation
 
     self._argument_validate()
     self._dtype_bitwidth = torch.finfo(self.dtype).bits
@@ -79,6 +82,8 @@ class Injector():
       raise ValueError('Invalid data types.')
     if self.error_model not in Injector.valid_error_models:
       raise ValueError('Unknown error model.')
+    if self.mitigation not in Injector.valid_mitigations:
+      raise ValueError('Unknown mitigation method.')
     if self.verbose == True:
       print('Injector initialized.\nError probability:', self.p)
       print('Data type:', self.dtype)
@@ -174,3 +179,11 @@ class Injector():
     del error_maps
     if self.verbose == True:
       print('Error map loaded from:', path)
+  
+  def config_mitigation(self):
+    if self.mitigation != None:
+      defender = deterrorch.Defender()
+      if self.mitigation == 'SBP':
+        pass
+      if self.mitigation == 'clip':
+        pass

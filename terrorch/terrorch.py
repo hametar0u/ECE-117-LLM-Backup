@@ -1,8 +1,7 @@
 import time
 import torch
 import torch.nn as nn
-import terrorch.deterrorch
-
+from terrorch.deterrorch import Defender
 
 class Injector():
     valid_dtypes = [torch.float, ]
@@ -187,10 +186,21 @@ class Injector():
         del error_maps
         if self.verbose == True:
             print('Error map loaded from:', path)
+    
+    def _activation_limitation(self, **kwargs) -> None:
+        """This method adds forward hooks to each named parameter to check if there are invalid activation values.
+        """  
+        def clamp_output(module, input, output):
+            output.clamp_(min = kwargs['min'], max = kwargs['max'])
+        for name, module in self.named_modules():
+            if isinstance(module, nn.Linear):
+                module.register_forward_hook(clamp_output)
 
-    def config_mitigation(self):        
+    def config_mitigation(self) -> None:
+        """This method is to handle different types of error mitigation schemes.
+        """                
         if self.mitigation != None:
             if self.mitigation == 'SBP':
-                pass
+                self._error_maps = Defender.sbp(self._error_maps, protected_bits = [31, 30, 29, 28]) #sign bit and top 3 exponent bits
             if self.mitigation == 'clip':
-                pass
+                self._activation_limitation(min = -1000, max = 1000) #very loose limitation actually

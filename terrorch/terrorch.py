@@ -1,13 +1,13 @@
 import time
 import torch
 import torch.nn as nn
-import deterrorch
+import terrorch.deterrorch
 
 
 class Injector():
     valid_dtypes = [torch.float, ]
     valid_error_models = ['bit', 'value']
-    valid_mitigations = ['SBP', 'clip']
+    valid_mitigations = ['None', 'SBP', 'clip']
 
     @classmethod
     def _error_map_generate(cls, injectee_shape: tuple, dtype_bitwidth: int, device: torch.device, p: float) -> torch.Tensor:
@@ -53,7 +53,7 @@ class Injector():
                  device: torch.device = torch.device('cpu'),
                  verbose: bool = False,
                  error_model='bit',
-                 mitigation=None,
+                 mitigation = 'None',
                  ) -> None:
         """The initialization of the Injector class.
 
@@ -188,7 +188,7 @@ class Injector():
         if self.verbose == True:
             print('Error map loaded from:', path)
 
-    def config_mitigation(self):
+    def config_mitigation(self):        
         if self.mitigation != None:
             if self.mitigation == 'SBP':
                 pass

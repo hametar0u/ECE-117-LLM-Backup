@@ -3,12 +3,20 @@ import torch
 import torch.nn as nn
 
 class Defender():
-    """This class defines the error mitigation schemes (not exhaustive). Add your custom error mitigations as classmethod here.
+    """This class defines the error mitigation schemes (not exhaustive). Add your custom error mitigation methods as classmethod here.
     """    
 
     @classmethod
-    def _output_limitation(cls, model: nn.Module, **kwargs) -> nn.Module:
-        raise NotImplementedError('Activation limitation is not implemented in Defender. Please directly use Injector._activation_limitation()!')
+    def activation_limitation(cls, model, **kwargs) -> None:
+        """This method adds forward hooks to each named parameter to check if there are invalid activation values.
+        """  
+        def clamp_output(module, input, output):
+            output.nan_to_num_(nan = 0.0)
+            output.clamp_(min = kwargs['min'], max = kwargs['max'])
+
+        for name, module in model.named_modules():
+            if isinstance(module, nn.Linear):
+                module.register_forward_hook(clamp_output)
     
     @classmethod
     def sbp(cls, error_maps: dict, **kwargs) -> None:

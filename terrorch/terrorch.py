@@ -192,6 +192,6 @@ class Injector():
         """                
         if self.mitigation != None:
             if self.mitigation == 'SBP':
-                model._error_maps = Defender.sbp(model._error_maps, protected_bits = [31, 30, 29, 28]) #sign bit and top 3 exponent bits
+                model._error_maps = Defender.sbp(model._error_maps, protected_bits = [31, 30, 29, 28, 27, 26, 25, 24, 23])
             if self.mitigation == 'clip':
-                Defender.activation_limitation(model, min = -1000, max = 1000) #very loose limitation actually
+                Defender.activation_limitation(model, min = -6, max = 6) 

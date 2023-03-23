@@ -1,7 +1,7 @@
 # Terrorch
-- Terrorch: Error Injection for Torch
+- Terrorch: Efficient Error Injection for Deep Learning Models using Torch
 ## Usage
-- See `example.ipynb`
+- See notebooks in `./examples`
 ## To-do:
 - [X] Allow users to determine the device of generating and injecting errors.
 - [X] Automatic error map size allocation by iterating through model.

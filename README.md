@@ -12,7 +12,7 @@
 ## Usage Examples / Demos
 - See notebooks in `./examples`
     - (Quick Start) Error injection to Vision Transformers: `./examples/ViT.ipynb`
-    - Evaluating and Enhancing Robustness of Deep Recommendation Systems Against Silent Hardware Errors: `./examples/DRS.ipynb`
+    - Evaluating and Enhancing Robustness of Deep Recommendation Systems Against Silent Hardware Errors: `./examples/DRS/`
 
 ## To-do:
 - [X] Allow users to determine the device of generating and injecting errors.

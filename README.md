@@ -13,6 +13,15 @@
     - Allows user to define their customized error model such as random value error beyond the provided bit flip error. 
 
 ## Usage Examples / Demos
-- See notebooks in `./examples`
+ - Install the dependencies in `requirements.yml`:
+ ```bash
+    conda env create --name terrorch --file=requirements.yml
+ ```
+ - Download the datasets:
+   - MovieLens-1M: https://grouplens.org/datasets/movielens/1m/
+   - MovieLens-20M: https://grouplens.org/datasets/movielens/20m/
+   - Criteo DAC: https://ailab.criteo.com/ressources/ 
+
+- Examples: see notebooks in `./examples`
     - (Quick Start) Error injection to Vision Transformers: `./examples/ViT.ipynb`
     - Evaluating and Enhancing Robustness of Deep Recommendation Systems Against Silent Hardware Errors: `./examples/DRS/`

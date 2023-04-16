@@ -1,7 +1,7 @@
 import time
 import torch
 import torch.nn as nn
-from terrorch.deterrorch import Defender
+from deterrorch import Defender
 
 class Injector():
     valid_dtypes = [torch.float, ]
@@ -192,6 +192,6 @@ class Injector():
         """                
         if self.mitigation != None:
             if self.mitigation == 'SBP':
-                model._error_maps = Defender.sbp(model._error_maps, protected_bits = [31, 30, 29, 28, 27, 26, 25, 24, 23])
+                self._error_maps = Defender.sbp(self._error_maps, protected_bits = [31, 30, 29, 28, 27, 26, 25, 24, 23])
             if self.mitigation == 'clip':
                 Defender.activation_clipping(model, min = -6, max = 6) 

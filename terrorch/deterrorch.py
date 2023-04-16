@@ -7,15 +7,20 @@ class Defender():
     """    
 
     @classmethod
-    def activation_limitation(cls, model, **kwargs) -> None:
+    def activation_clipping(cls, model, **kwargs) -> None:
         """This method adds forward hooks to each named parameter to check if there are invalid activation values.
         """  
         def clamp_output(module, input, output):
             output.nan_to_num_(nan = 0.0)
             output.clamp_(min = kwargs['min'], max = kwargs['max'])
+        
+        for name, module in reversed(list(model.named_modules())):
+            if isinstance(module, nn.Linear):
+                last_layer_name = name
+                break
 
         for name, module in model.named_modules():
-            if isinstance(module, nn.Linear):
+            if isinstance(module, nn.Linear) and name != last_layer_name:
                 module.register_forward_hook(clamp_output)
     
     @classmethod

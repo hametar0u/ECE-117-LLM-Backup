@@ -17,10 +17,6 @@
  ```bash
     conda env create --name terrorch --file=requirements.yml
  ```
- - Download the datasets:
-   - MovieLens-1M: https://grouplens.org/datasets/movielens/1m/
-   - MovieLens-20M: https://grouplens.org/datasets/movielens/20m/
-   - Criteo DAC: https://ailab.criteo.com/ressources/ 
 
 - Examples: see notebooks in `./examples`
     - (Quick Start) Error injection to Vision Transformers: `./examples/ViT.ipynb`

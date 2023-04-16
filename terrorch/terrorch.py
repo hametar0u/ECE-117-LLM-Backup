@@ -114,7 +114,7 @@ class Injector():
                             injectee_shape, self._dtype_bitwidth, self.device, self.p)
                         break
 
-    def inject(self, model: nn.Module) -> None:
+    def inject(self, model: nn.Module, use_mitigation = False) -> None:
         """Injecting the errors into the model
 
         Args:
@@ -122,6 +122,8 @@ class Injector():
         """
         start_time = time.time()
         self._error_map_allocate(model)
+        if use_mitigation == True:
+            self._perform_mitigation(model)
         error_count_number = 0
         param_count_number = 0
 
@@ -187,11 +189,12 @@ class Injector():
         if self.verbose == True:
             print('Error map loaded from:', path)
 
-    def perform_mitigation(self, model) -> None:
+    def _perform_mitigation(self, model) -> None:
         """This method is to handle different types of error mitigation schemes.
         """                
         if self.mitigation != None:
             if self.mitigation == 'SBP':
                 self._error_maps = Defender.sbp(self._error_maps, protected_bits = [31, 30, 29, 28, 27, 26, 25, 24, 23])
             if self.mitigation == 'clip':
-                Defender.activation_clipping(model, min = -6, max = 6) 
+                # Defender.activation_clipping(model, min = -6, max = 6) # This is referred from the ReLU6
+                Defender.activation_clipping(model, min = -100, max = 100) # This is a very loose clipping

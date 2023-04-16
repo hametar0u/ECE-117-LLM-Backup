@@ -194,4 +194,4 @@ class Injector():
             if self.mitigation == 'SBP':
                 model._error_maps = Defender.sbp(model._error_maps, protected_bits = [31, 30, 29, 28, 27, 26, 25, 24, 23])
             if self.mitigation == 'clip':
-                Defender.activation_limitation(model, min = -6, max = 6) 
+                Defender.activation_clipping(model, min = -6, max = 6) 

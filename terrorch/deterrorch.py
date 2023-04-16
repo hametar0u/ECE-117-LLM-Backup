@@ -7,7 +7,7 @@ class Defender():
     """    
 
     @classmethod
-    def activation_limitation(cls, model, **kwargs) -> None:
+    def activation_clipping(cls, model, **kwargs) -> None:
         """This method adds forward hooks to each named parameter to check if there are invalid activation values.
         """  
         def clamp_output(module, input, output):

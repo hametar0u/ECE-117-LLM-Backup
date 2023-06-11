@@ -48,16 +48,16 @@ class Injector():
         """The initialization of the Injector class.
 
         Args:
+            target_path (str): The file paths specifying targets.
             p (float, optional): The probability of the error. Defaults to 1e-10.
             dtype (torch.dtype, optional): The data type of the target model. Defaults to torch.float.
-            param_names (list(str), optional): The parameters that wished to be injected with error. Defaults to ['weight'].
             device (torch.device, optional): The device on which the error injection is carried out. Defaults to torch.device('cpu').
             verbose (bool, optional): Setting True to print information about error injection. Defaults to False.
             error_model (str, optional): The error model. Defaults to 'bit'.
         """
+        self.target_path = target_path
         self.p = p
         self.dtype = dtype
-        self.target_path = target_path
         self.device = device
         self.verbose = verbose
         self.error_model = error_model
@@ -67,7 +67,7 @@ class Injector():
         self._dtype_bitwidth = torch.finfo(self.dtype).bits
         self._error_maps = {}
         self._error_count = {}
-        self.targets = self._assign_targets()
+        self._assign_targets()
 
     def _argument_validate(self) -> None:
         if self.p <= 0 or self.p >= 1:
@@ -91,7 +91,7 @@ class Injector():
             model (nn.Module): The target model for error injection.
         """
         for param_name, param in model.named_parameters():
-            for each_param in self.param_names:
+            for each_param in self.targets:
                 if each_param == param_name:
                     injectee_shape = param.shape
                     self._error_maps[param_name], self._error_count[param_name] = Injector._error_map_generate(

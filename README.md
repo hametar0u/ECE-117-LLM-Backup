@@ -1,5 +1,5 @@
-# Terrorch
-- Terrorch: A User-friendly, Efficient, and Flexible Hardware Error Injection Framework
+# PyTEI
+- PyTEI: A User-friendly, Efficient, and Flexible Hardware Error Injection Framework for PyTorch
 
 ## Highlights
 - User-friendly:
@@ -9,13 +9,13 @@
     - Uses `torch.view()` for bit flip operations, which significantly (about 100X) accelerates the error injection effort compared with other error injection tools. 
 - Flexible:
     - Works for any PyTorch model as long as they are implemented as `torch.nn.Module` with named parameters.
-    - Implements two mitigation methods for emulation: activation filtering and selective bit protection in `deterrorch.py` and allows user customization.
+    - Implements two mitigation methods for emulation: activation filtering and selective bit protection in `depytei.py` and allows user customization.
     - Allows user to define their customized error model such as random value error beyond the provided bit flip error. 
 
 ## Usage Examples / Demos
  - Install the dependencies in `requirements.yml`:
  ```bash
-    conda env create --name terrorch --file=requirements.yml
+    conda env create --name PyTEI --file=requirements.yml
  ```
 
 - Examples: see notebooks in `./examples`

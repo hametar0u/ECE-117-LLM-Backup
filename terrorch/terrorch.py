@@ -1,7 +1,7 @@
 import time
 import torch
 import torch.nn as nn
-from deterrorch import Defender
+from depytei import Defender
 
 class Injector():
     valid_dtypes = [torch.float, ]

@@ -32,23 +32,14 @@ class Injector():
     @classmethod
     def _error_map_generate_v(cls, injectee_shape: tuple, dtype_bitwidth: int, device: torch.device, p: float) -> torch.Tensor:
         """Injecting randome value errors into the tensor based on the given parameters.
-
-        Args:
-            injectee_shape (tuple): The shape of the tensor that is the target of the error injection
-            dtype_bitwidth (int): The bits that the each element in the provided data type occupies.
-            device (torch.device): The device on which the error injection is carried out.
-            p (float): The probability of the error.
-
-        Returns:
-            torch.Tensor: The tensor with error injected.
         """
         raise NotImplementedError(
             'Random value error model is not implemented yet.')
 
     def __init__(self,
+                 target_path: str,
                  p: float = 1e-10,
                  dtype: torch.dtype = torch.float,
-                 param_names: list = ['weight'],
                  device: torch.device = torch.device('cpu'),
                  verbose: bool = False,
                  error_model='bit',
@@ -57,16 +48,16 @@ class Injector():
         """The initialization of the Injector class.
 
         Args:
+            target_path (str): The file paths specifying targets.
             p (float, optional): The probability of the error. Defaults to 1e-10.
             dtype (torch.dtype, optional): The data type of the target model. Defaults to torch.float.
-            param_names (list(str), optional): The parameters that wished to be injected with error. Defaults to ['weight'].
             device (torch.device, optional): The device on which the error injection is carried out. Defaults to torch.device('cpu').
             verbose (bool, optional): Setting True to print information about error injection. Defaults to False.
             error_model (str, optional): The error model. Defaults to 'bit'.
         """
+        self.target_path = target_path
         self.p = p
         self.dtype = dtype
-        self.param_names = param_names
         self.device = device
         self.verbose = verbose
         self.error_model = error_model
@@ -76,6 +67,7 @@ class Injector():
         self._dtype_bitwidth = torch.finfo(self.dtype).bits
         self._error_maps = {}
         self._error_count = {}
+        self._assign_targets()
 
     def _argument_validate(self) -> None:
         if self.p <= 0 or self.p >= 1:
@@ -90,6 +82,7 @@ class Injector():
             print('Injector initialized.\nError probability:', self.p)
             print('Data type:', self.dtype)
             print('Error model:', self.error_model)
+        
 
     def _error_map_allocate(self, model: nn.Module) -> None:
         """Iterative through model parameters and allocate the error maps for injection.
@@ -97,22 +90,20 @@ class Injector():
         Args:
             model (nn.Module): The target model for error injection.
         """
-        if type(model) == dict:
-            for param_name, param in model.items():
-                for each_param in self.param_names:
-                    if each_param in param_name:
-                        injectee_shape = param.shape
-                        self._error_maps[param_name], self._error_count[param_name] = Injector._error_map_generate(
-                            injectee_shape, self._dtype_bitwidth, self.device, self.p)
-                        break
-        else:
-            for param_name, param in model.named_parameters():
-                for each_param in self.param_names:
-                    if each_param in param_name:
-                        injectee_shape = param.shape
-                        self._error_maps[param_name], self._error_count[param_name] = Injector._error_map_generate(
-                            injectee_shape, self._dtype_bitwidth, self.device, self.p)
-                        break
+        for param_name, param in model.named_parameters():
+            for each_param in self.targets:
+                if each_param == param_name:
+                    injectee_shape = param.shape
+                    self._error_maps[param_name], self._error_count[param_name] = Injector._error_map_generate(
+                        injectee_shape, self._dtype_bitwidth, self.device, self.p)
+                    break
+
+    def _assign_targets(self) -> None:
+        """Take targets information based on the targets file as specified. `Targets file`: a file that specifies what targets to attack. 
+        """    
+        with open(self.target_path, 'r') as f:
+            targets = [line.strip() for line in f if not line.startswith(';')] # Use semicolon (`;`) to comment out a parameter.
+        self.targets = targets  
 
     def inject(self, model: nn.Module, use_mitigation = False) -> None:
         """Injecting the errors into the model
@@ -127,22 +118,13 @@ class Injector():
         error_count_number = 0
         param_count_number = 0
 
-        if type(model) == dict:
-            for param_name, param in model.items():
-                if param_name in self._error_maps.keys():
-                    error_mask = self._error_maps[param_name]
-                    error_count_number += self._error_count[param_name].sum()
-                    param_count_number += self._error_maps[param_name].numel()
-                    param.data = (param.view(torch.int) ^
-                                  error_mask).view(torch.float)
-        else:
-            for param_name, param in model.named_parameters():
-                if param_name in self._error_maps.keys():
-                    error_mask = self._error_maps[param_name]
-                    error_count_number += self._error_count[param_name].sum()
-                    param_count_number += self._error_maps[param_name].numel()
-                    param.data = (param.view(torch.int) ^
-                                  error_mask).view(torch.float)
+        for param_name, param in model.named_parameters():
+            if param_name in self._error_maps.keys():
+                error_mask = self._error_maps[param_name]
+                error_count_number += self._error_count[param_name].sum()
+                param_count_number += self._error_maps[param_name].numel()
+                param.data = (param.view(torch.int) ^
+                                error_mask).view(torch.float)
 
         if self.verbose == True:
             injected_params = self._error_maps.keys()

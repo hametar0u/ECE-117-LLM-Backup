@@ -1,7 +1,7 @@
 import time
 import torch
 import torch.nn as nn
-from deterrorch import Defender
+from depytei import Defender
 
 class Injector():
     valid_dtypes = [torch.float, ]
@@ -123,8 +123,7 @@ class Injector():
                 error_mask = self._error_maps[param_name]
                 error_count_number += self._error_count[param_name].sum()
                 param_count_number += self._error_maps[param_name].numel()
-                param.data = (param.view(torch.int) ^
-                                error_mask).view(torch.float)
+                param.data = (param.view(torch.int) ^ error_mask).view(torch.float)
 
         if self.verbose == True:
             injected_params = self._error_maps.keys()

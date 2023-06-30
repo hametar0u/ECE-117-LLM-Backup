@@ -12,6 +12,7 @@
     - Implements two mitigation methods for emulation: activation filtering and selective bit protection in `depytei.py` and allows user customization.
     - Allows user to define their customized error model such as random value error beyond the provided bit flip error. 
 
+
 ## Usage Examples / Demos
  - Install the dependencies in `requirements.yml`:
  ```bash

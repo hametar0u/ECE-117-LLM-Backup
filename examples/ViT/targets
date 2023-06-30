@@ -1,4 +1,5 @@
 ; Named parameters in vit_tiny_patch16_224
+; Use semicolon to ignore lines
 ; cls_token
 ; pos_embed
 ;patch_embed.proj.weight

@@ -1,5 +1,16 @@
 # PyTEI
 - PyTEI: A User-friendly, Efficient, and Flexible Hardware Error Injection Framework for PyTorch
+- Please consider citing our paper if you find PyTEI useful in your research!
+```
+@misc{ma2023evaluating,
+      title={Evaluating and Enhancing Robustness of Deep Recommendation Systems Against Hardware Errors}, 
+      author={Dongning Ma and Xun Jiao and Fred Lin and Mengshi Zhang and Alban Desmaison and Thomas Sellinger and Daniel Moore and Sriram Sankar},
+      year={2023},
+      eprint={2307.10244},
+      archivePrefix={arXiv},
+      primaryClass={cs.IR}
+}
+```
 
 ## Highlights
 - User-friendly:
@@ -34,9 +45,3 @@
 - [ ] Support for 64-bit double precision.
 - [ ] Support error injection during training.
 - [ ] Support for quantized data types.
-
-## Contact
-- Dongning Ma, Ph.D. Student, VU-DETAIL, email: dma2@villanova.edu 
-- Richard Wang, Ph.D. Student, VU-DETAIL, email: rwang8@villanova.edu 
-- Sizhe Zhang, Ph.D. Student, VU-DETAIL, email: szhang6@villanova.edu 
-- Prof. Xun Jiao, Advisor, VU-DETAIL, email: xun.jiao@villanova.edu 

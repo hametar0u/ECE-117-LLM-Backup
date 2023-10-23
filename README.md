@@ -1,14 +1,5 @@
 # PyTEI
 - PyTEI: A User-friendly, Efficient, and Flexible Hardware Error Injection Framework for PyTorch
-- Please consider citing our paper if you find PyTEI useful in your research!
-```
-@article{ma2023evaluating,
-  title={Evaluating and Enhancing Robustness of Deep Recommendation Systems Against Hardware Errors},
-  author={Ma, Dongning and Jiao, Xun and Lin, Fred and Zhang, Mengshi and Desmaison, Alban and Sellinger, Thomas and Moore, Daniel and Sankar, Sriram},
-  journal={arXiv preprint arXiv:2307.10244},
-  year={2023}
-}
-```
 
 ## Highlights
 - User-friendly:
@@ -20,7 +11,6 @@
     - Works for any PyTorch model as long as they are implemented as `torch.nn.Module` with named parameters.
     - Implements two mitigation methods for emulation: activation filtering and selective bit protection in `depytei.py` and allows user customization.
     - Allows user to define their customized error model such as random value error beyond the provided bit flip error. 
-
 
 ## Usage Examples / Demos
  - Install the dependencies in `requirements.yml`:

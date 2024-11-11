@@ -42,6 +42,51 @@ Because of our lack of understanding of how these objects work, and the quick as
 
 In this paper, we analyze how injecting bit errors into specific locations of a transformer and the LLM model as a whole affect the output. To this end, we use the \{INSERT MODEL\} as a base model to test on. To inject errors into our base model we use the PyTEI package \cite{Ma23}. To quantify the effect of our errors, we compare the score of our base model to the score of the models with errors injected using the \{INSERT TESTS\}.
 
+Our basic workflow is outlined in the below diagram
+
+\begin{figure}[ht]
+	\begin{center}
+		\includegraphics[height=6cm]{workflow.jpg}
+		\caption{General evaluation workflow for LLM}
+		\label{workflow}
+	\end{center}
+\end{figure}
+\section{Project Goals and Timeline}
+
+The goal of this project is to evaluate the effect of random bit flips on the output of LLMs and analyze the possible security hazards that these hardware errors could cause in real systems. We plan to do this by modeling various rates of bit flips and by injecting errors into various parts of the LLMs, and evaluating the robustness on a variety of different tests.
+
+Up until now, we have chosen a open source model that gives us the freedom to inject various bit errors, and have select some tests that we can evaluate our models on. There are still multiple tests that we want to evaluate our model on, and some more analysis to be done to find specific places to inject bit flips into to look for any particularly vulnerable parts.
+
+Below is a general timeline for what we want to accomplish and when.
+
+\begin{itemize}
+	\item Week 7: Finish selecting different tests to evaluate
+	\item Week 8: Try injecting vulnerabilities into specific parts of the LLM with different error rates
+	\item Week 9: Analyze results and compile into final report
+	\item  Week 10: Finish final report and presentation
+\end{itemize}
+
+Using this, we can turn the knobs to evaluate different kinds of error and add various tests to our test-suite as we continue to expand our results.
+
+\section{Preliminary Results}
+
+\section{Future Work}
+
+In the near future, we hope to be able to pick more tests that can evaluate the effect of bit flips on our model. This will take a significant amount of compute time, even though we have chosen a mini LLM model.
+
+For future work, we hope to be able to analyze our different parts of the LLM are affected by random bit flips. For example, we want to see if a bit flip in the attention mechanism is more relevant than a bit flip in the fully connected layeres, or vice versa. 
+
+In addition, because of the bits being stored as a floating point, it's also possible that some bit flips can be much more relevant than others. For example, a bit being flipped in the exponent produces a much larger effect than a bit being flipped in the mantissa. We hope to be able to expand on the PyTEI library to give us the ability to evaluate these effects.
+
+Using this larger body of results, we hope to be able to analyze the possible security risks that hardware errors pose to LLM implementations.
+
+\section{Related Work}
+There is a related paper \cite{Ma23} that analyzes a model known as a recommendation system. In their work, they build the PyTEI package for injecting models. However, recommendation models differ significantly from LLMs so the overall effect could be quite different for the same error injections.
+
+However, the paper does not do any evaluation on the different of hardware errors in specific parts of the recommendation system, so the question of whether particular parts are more vulnerable is still open.
+
+An interesting part of this paper is the evaluation of possible mitigations against hardware flips, which can also be evaluated in the context of LLMs. In addition, their evaluation had limited scope, and it could be interesting to expand on their analysis by testing a wider variety of errors and examining the tradeoffs of each.
+
 \section{First Level Heading}
 
 First level headings are all flush left, initial caps, bold and in point
@@ -75,7 +120,7 @@ citation style is consistent.
 
 \subsubsection{Footnotes}
 
-Indicate footnotes with a number\footnote{This is a sample footnote} in
+Indicate footnotes with a number in
 the text. Place the footnotes at the bottom of the page they appear on.
 Precede the footnote with a vertical rule of 2 inches (12 picas).
 

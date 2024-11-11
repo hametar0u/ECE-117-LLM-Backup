@@ -5,7 +5,7 @@ from depytei import Defender
 
 class Injector():
     valid_dtypes = [torch.float, ]
-    valid_error_models = ['bit', 'value']
+    valid_error_models = ['bit', 'value', 'exponent']
     valid_mitigations = ['None', 'SBP', 'clip']
 
     @classmethod
@@ -30,11 +30,55 @@ class Injector():
         return error_map, error_count
 
     @classmethod
-    def _error_map_generate_v(cls, injectee_shape: tuple, dtype_bitwidth: int, device: torch.device, p: float) -> torch.Tensor:
+    def _error_map_generate_v(cls, injectee_shape: tuple, dtype_bitwidth: int, device: torch.device, p: float, v: float) -> torch.Tensor:
         """Injecting randome value errors into the tensor based on the given parameters.
+
+        Args:
+            injectee_shape (tuple): The shape of the tensor that is the target of the error injection
+            dtype_bitwidth (int): The bits that the each element in the provided data type occupies.
+            device (torch.device): The device on which the error injection is carried out.
+            p (float): The probability of the error.
+            v (float): The value of error. The parameters affected by the error will be reassigned to be equal v.
+
+        Returns:
+            torch.Tensor: The tensor with error injected.
         """
-        raise NotImplementedError(
-            'Random value error model is not implemented yet.')
+        mask = (torch.rand(*injectee_shape, dtype=torch.float32) < p).to(torch.float)
+        filter = torch.tensor(v, dtype=torch.float, device=device)
+        error_count = mask.sum(dim=-1)
+        error_map = mask * filter
+        return error_map, error_count
+
+    @classmethod
+    def _error_map_generate_e(cls, injectee_shape: tuple, dtype_bitwidth: int, device: torch.device, p: float) -> torch.Tensor:
+        """Injecting randome value errors into the tensor based on the given parameters.
+
+        Args:
+            injectee_shape (tuple): The shape of the tensor that is the target of the error injection
+            dtype_bitwidth (int): The bits that the each element in the provided data type occupies.
+            device (torch.device): The device on which the error injection is carried out.
+            p (float): The probability of the error.
+
+        Returns:
+            torch.Tensor: The tensor with error injected.
+        """
+        exponent_bitwidth = 8
+        mantissa_bitwidth = 23
+        
+        error_map = (2 * torch.ones((*injectee_shape, dtype_bitwidth), dtype=torch.int, device=device)) ** torch.arange(
+            0, dtype_bitwidth, dtype=torch.int, device=device).flip(dims=(-1, )).expand((*injectee_shape, dtype_bitwidth))
+
+        filter = (p * nn.functional.dropout(torch.ones_like(error_map,
+                    dtype=torch.float, device=device), 1 - p)).int()
+
+        exponent_filter = torch.zeros_like(filter, dtype=torch.int, device=device)
+        exponent_filter[..., mantissa_bitwidth:] = filter[..., mantissa_bitwidth:]
+
+        error_count = exponent_filter.sum(dim=-1)
+        
+        exponent_error_map = (exponent_filter * error_map).sum(dim=-1).int()
+
+        return exponent_error_map, error_count
 
     def __init__(self,
                  target_path: str,
@@ -44,6 +88,7 @@ class Injector():
                  verbose: bool = False,
                  error_model='bit',
                  mitigation = 'None',
+                 v=4
                  ) -> None:
         """The initialization of the Injector class.
 
@@ -62,6 +107,7 @@ class Injector():
         self.verbose = verbose
         self.error_model = error_model
         self.mitigation = mitigation
+        self.v=v
 
         self._argument_validate()
         self._dtype_bitwidth = torch.finfo(self.dtype).bits
@@ -94,7 +140,14 @@ class Injector():
             for each_param in self.targets:
                 if each_param == param_name:
                     injectee_shape = param.shape
-                    self._error_maps[param_name], self._error_count[param_name] = Injector._error_map_generate(
+                    if(self.error_model=='bit'):
+                        self._error_maps[param_name], self._error_count[param_name] = Injector._error_map_generate(
+                        injectee_shape, self._dtype_bitwidth, self.device, self.p)
+                    elif(self.error_model=='value'):
+                        self._error_maps[param_name], self._error_count[param_name] = Injector._error_map_generate_v(
+                        injectee_shape, self._dtype_bitwidth, self.device, self.p, self.v)
+                    elif(self.error_model=='exponent'):
+                        self._error_maps[param_name], self._error_count[param_name] = Injector._error_map_generate_e(
                         injectee_shape, self._dtype_bitwidth, self.device, self.p)
                     break
 
@@ -123,7 +176,12 @@ class Injector():
                 error_mask = self._error_maps[param_name]
                 error_count_number += self._error_count[param_name].sum()
                 param_count_number += self._error_maps[param_name].numel()
-                param.data = (param.view(torch.int) ^ error_mask).view(torch.float)
+                if (self.error_model=='bit'):
+                    param.data = (param.view(torch.int) ^ error_mask).view(torch.float)
+                elif(self.error_model=='value'):
+                    v_mask = error_mask != 0
+                    param.data[v_mask] = error_mask[v_mask]
+
 
         if self.verbose == True:
             injected_params = self._error_maps.keys()

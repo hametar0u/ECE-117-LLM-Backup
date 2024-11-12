@@ -1,0 +1,56 @@
+This is BibTeX, Version 0.99d (TeX Live 2021)
+Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
+The top-level auxiliary file: paper2.aux
+The style file: plainnat.bst
+Database file #1: samplebib.bib
+Name 3 in "D. Ma and X. Jiao and F. Lin, and M. Zhang and A. Desmaison and T. Sellinger and D. Moore and S. Sankar" has a comma at the end for entry Ma23
+while executing---line 1347 of file plainnat.bst
+Name 3 in "D. Ma and X. Jiao and F. Lin, and M. Zhang and A. Desmaison and T. Sellinger and D. Moore and S. Sankar" has a comma at the end for entry Ma23
+while executing---line 1429 of file plainnat.bst
+Name 3 in "D. Ma and X. Jiao and F. Lin, and M. Zhang and A. Desmaison and T. Sellinger and D. Moore and S. Sankar" has a comma at the end for entry Ma23
+while executing---line 1429 of file plainnat.bst
+Warning--empty journal in Ma23
+Warning--empty year in Ma23
+Warning--empty year in Ma23
+You've used 2 entries,
+            2773 wiz_defined-function locations,
+            603 strings with 5152 characters,
+and the built_in function-call counts, 991 in all, are:
+= -- 72
+> -- 85
+< -- 1
++ -- 29
+- -- 27
+* -- 85
+:= -- 164
+add.period$ -- 5
+call.type$ -- 2
+change.case$ -- 15
+chr.to.int$ -- 2
+cite$ -- 7
+duplicate$ -- 35
+empty$ -- 64
+format.name$ -- 29
+if$ -- 191
+int.to.chr$ -- 1
+int.to.str$ -- 1
+missing$ -- 1
+newline$ -- 17
+num.names$ -- 8
+pop$ -- 41
+preamble$ -- 1
+purify$ -- 13
+quote$ -- 0
+skip$ -- 31
+stack$ -- 0
+substring$ -- 4
+swap$ -- 1
+text.length$ -- 0
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 22
+warning$ -- 3
+while$ -- 6
+width$ -- 0
+write$ -- 28
+(There were 3 error messages)

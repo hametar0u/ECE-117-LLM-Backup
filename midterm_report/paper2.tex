@@ -42,6 +42,7 @@ Because of our lack of understanding of how these objects work, and the quick as
 
 In this paper, we analyze how injecting bit errors into specific locations of a transformer and the LLM model as a whole affect the output. To this end, we use the GPT2 as a base model to test on. To inject errors into our base model we use the PyTEI package \cite{Ma23}. To quantify the effect of our errors, we compare the score of our base model to the score of the models with errors injected using the PyTEI package with DeepEval to evaluate.
 
+
 Our basic workflow is outlined in the below diagram
 
 \begin{figure}[ht]
@@ -69,7 +70,9 @@ Below is a general timeline for what we want to accomplish and when.
 Using this, we can turn the knobs to evaluate different kinds of error and add various tests to our test-suite as we continue to expand our results.
 
 \section{Methods}
+
 We chose Hugging Face's implementations of GPT-2 \cite{gpt2} as our model of choice. We evaluated our models on \cite{DeepEval}, an open-source LLM benchmark, specifically the computer science and astronomy tests that have the injected LLM answer multiple choice questions. For each model with varying error rates, the score is computed as the proportions of correct answers. For the purposes of this midterm report, we only implemented coarsed-grained error injection into every layer.
+
 
 \section{Preliminary Results}
 \begin{figure}[ht]
@@ -82,13 +85,21 @@ We chose Hugging Face's implementations of GPT-2 \cite{gpt2} as our model of cho
 
 As seen in Figure \ref{gpt2-res}, we see a negligable change in performance varying error rates in the range of 1e-9 on both benchmarks. Note that we were unable to increase the error rate anything beyond that because it resulted in a NaN output. This is likely due to the fact that random bit flips happened in the exponent field of a number.
 
+However, the results tended to be have large deviation from one run to the other and because of our limited computation resources were were not able to finish enough runs in the required time to get a solid average. In addition, the number of errors that are injected are a probablistic sample, which also makes the results less certain for these fewer number of runs. This is a strong limitation of our work so far.
+
+However, our current work does indicate that perhaps LLMs remain quite robust to a small number of errors, which would be the relevant case for random hardware bitflips induced by strictly hardware errors.
+
 \section{Future Work}
 
-In the near future, we hope to be able to pick more tests that can evaluate the effect of bit flips on our model. This will take a significant amount of compute time, even though we have chosen a mini LLM model.
+From a results standpoint, we hope to be able to find the time to run more tests to get a stronger average. We also hope to be able to modify PyTEI to inject a random number of errors, instead of using a low probability of injecting errors which has a large variance of the number of errors that are actually injected. In addition, some errors tend to be much more severe than others, which again raises the variance in our testing. This compounded with the fact that the appearance of NaN values stops us from evaluating high bit Thus, we hope to be able to modify PyTEI to support our more specific cases.
+
+From a better testing standpoint, in the near future, we hope to be able to pick more tests that can evaluate the effect of bit flips on our model. This will take a significant amount of compute time, even though we have chosen a mini LLM model.
 
 For future work, we hope to be able to analyze our different parts of the LLM are affected by random bit flips. For example, we want to see if a bit flip in the attention mechanism is more relevant than a bit flip in the fully connected layeres, or vice versa. 
 
 In addition, because of the bits being stored as a floating point, it's also possible that some bit flips can be much more relevant than others. For example, a bit being flipped in the exponent produces a much larger effect than a bit being flipped in the mantissa. We hope to be able to expand on the PyTEI library to give us the ability to evaluate these effects.
+
+Furthermore, it may be worth taking some time to evaluate larger, more modern models to see if more accurate models tend to be less robust.
 
 Using this larger body of results, we hope to be able to analyze the possible security risks that hardware errors pose to LLM implementations.
 
@@ -98,12 +109,6 @@ There is a related paper \cite{Ma23} that analyzes a model known as a recommenda
 However, the paper does not do any evaluation on the different of hardware errors in specific parts of the recommendation system, so the question of whether particular parts are more vulnerable is still open.
 
 An interesting part of this paper is the evaluation of possible mitigations against hardware flips, which can also be evaluated in the context of LLMs. In addition, their evaluation had limited scope, and it could be interesting to expand on their analysis by testing a wider variety of errors and examining the tradeoffs of each.
-
-
-
-%\bibliographystyle{alpha} 
-%\bibliography{samplebib}
-%inline the .bbl file directly for mailing to authors.
 
 \begin{thebibliography}{Com79}
 \bibitem[Ma et al., 2023]{Ma23} D. Ma, X. Jiao, F. Lin, M. Zhang, A. Desmaison, T. Sellinger, D. Moore, S. Sankar.

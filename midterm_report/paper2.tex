@@ -68,7 +68,21 @@ Below is a general timeline for what we want to accomplish and when.
 
 Using this, we can turn the knobs to evaluate different kinds of error and add various tests to our test-suite as we continue to expand our results.
 
+\section{Methods}
+We chose Hugging Face's implementations of GPT-2 as our model of choice. We evaluated our models on DeepEval, an open-source LLM benchmark, specifically the computer science and astronomy tests. We recorded the scores [TODO: explain what this score is], comparing our models with varying error rates. For the purposes of this midterm report, we only implemented coarsed-grained error injection into every layer.
+
+[TODO: citations for the models and the benchmark]
+
 \section{Preliminary Results}
+\begin{figure}[ht]
+	\begin{center}
+		\includegraphics[height=6cm]{gpt2.jpg}
+		\caption{GPT 2 performance on DeepEval with varying error rates}
+		\label{gpt2-res}
+	\end{center}
+\end{figure}
+
+As seen in Figure \ref{gpt2-res}, we see a negligable change in performance varying error rates in the range of 1e-9 on both benchmarks. Note that we were unable to increase the error rate anything beyond that because it resulted in a NaN output. This is likely due to the fact that random bit flips happened in the exponent field of a number.
 
 \section{Future Work}
 

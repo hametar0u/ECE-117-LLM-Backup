@@ -69,10 +69,7 @@ Below is a general timeline for what we want to accomplish and when.
 Using this, we can turn the knobs to evaluate different kinds of error and add various tests to our test-suite as we continue to expand our results.
 
 \section{Methods}
-We chose Hugging Face's implementations of GPT-2 as our model of choice. We evaluated our models on DeepEval, an open-source LLM benchmark, specifically the computer science and astronomy tests that have the injected LLM answer multiple choice questions. For each model with varying error rates, the score is computed as the proportions of correct answers. For the purposes of this midterm report, we only implemented coarsed-grained error injection into every layer.
-
-
-[TODO: citations for the models and the benchmark]
+We chose Hugging Face's implementations of GPT-2 \cite{gpt2} as our model of choice. We evaluated our models on \cite{DeepEval}, an open-source LLM benchmark, specifically the computer science and astronomy tests that have the injected LLM answer multiple choice questions. For each model with varying error rates, the score is computed as the proportions of correct answers. For the purposes of this midterm report, we only implemented coarsed-grained error injection into every layer.
 
 \section{Preliminary Results}
 \begin{figure}[ht]
@@ -229,8 +226,12 @@ go at the end of the paper.
 \bibitem[Ma et al., 2023]{Ma23} D. Ma, X. Jiao, F. Lin, M. Zhang, A. Desmaison, T. Sellinger, D. Moore, S. Sankar.
 \newblock Evaluating and Enhancing Robustness of Deep Recommendation Systems Against Hardware Errors
 
-\end{thebibliography}
+\bibitem[DeepEval]{DeepEval} Confident AI.
+\newblock DeepEval: The LLM Evaluation Framework. Retrieved from https://github.com/confident-ai/deepeval.
 
+\bibitem[Radford et al., 2019]{gpt2} Radford, Alec and Wu, Jeff and Child, Rewon and Luan, David and Amodei, Dario and Sutskever, Ilya. 
+\newblock Language Models are Unsupervised Multitask Learners
+\end{thebibliography}
 \end{document}
 
 

@@ -4,7 +4,7 @@ import torch.nn as nn
 from depytei import Defender
 
 class Injector():
-    valid_dtypes = [torch.float, ]
+    valid_dtypes = [torch.float, torch.bfloat16, torch.float16]
     valid_error_models = ['bit', 'value', 'exponent']
     valid_mitigations = ['None', 'SBP', 'clip']
 

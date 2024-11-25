@@ -21,11 +21,12 @@ class Injector():
         Returns:
             torch.Tensor: The tensor with error injected.
         """
+
         error_map = (2 * torch.ones((*injectee_shape, dtype_bitwidth), dtype=torch.int, device=device)) ** torch.arange(
             0, dtype_bitwidth, dtype=torch.int, device=device).flip(dims=(-1, )).expand((*injectee_shape, dtype_bitwidth))
         filter = (p * nn.functional.dropout(torch.ones_like(error_map,
                   dtype=torch.float, device=device), 1 - p)).int()
-        error_count = filter.sum(dim=-1)
+        error_count = filter.sum(dim=None)
         error_map = (filter * error_map).sum(dim=-1).int()
         return error_map, error_count
 

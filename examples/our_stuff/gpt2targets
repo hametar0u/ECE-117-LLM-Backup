@@ -1,0 +1,12 @@
+transformer.h.11.ln_1.weight
+transformer.h.11.ln_1.bias
+transformer.h.11.attn.c_attn.weight
+transformer.h.11.attn.c_attn.bias
+transformer.h.11.attn.c_proj.weight
+transformer.h.11.attn.c_proj.bias
+transformer.h.11.ln_2.weight
+transformer.h.11.ln_2.bias
+transformer.h.11.mlp.c_fc.weight
+transformer.h.11.mlp.c_fc.bias
+transformer.h.11.mlp.c_proj.weight
+transformer.h.11.mlp.c_proj.bias

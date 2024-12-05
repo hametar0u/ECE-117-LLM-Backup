@@ -26,7 +26,7 @@ Harry Qian
 \maketitle
 
 \begin{abstract}
-In the past few years, there has been an explosion of interest in Large Language Models (LLMs) for a variety of practical applications. Much of this explosion has been driven by the invention of the Transformer architecture. However, the Transformer architecture inner workings largely remain a mystery. Combining this with the applications that LLMs are finding in the real-world, there a variety of new security risks that these LLMs open
+In the past few years, there has been an explosion of interest in Large Language Models (LLMs) for a variety of practical applications. Much of this explosion has been driven by the invention of the Transformer architecture \cite{Vaswani17}. However, the Transformer architecture inner workings largely remain a mystery. Combining this with the applications that LLMs are finding in the real-world, there a variety of new security risks that these LLMs open
 up their users to. In this paper, we analyze the robustness of LLMs to random bitflips in the variables, pinpointing specific parts of the LLM that are vulnerable to these hardware errors.
 
 
@@ -52,6 +52,13 @@ Our basic workflow is outlined in the below diagram
 		\label{workflow}
 	\end{center}
 \end{figure}
+
+\section{Threat Model}
+An attacker's goal is to cause information disclosure or cause a denial of service via system crash or significantly degrading the performance of the LLM. They may attack components such as edge AI chips and accelerators, CPUs and GPUs in LLM training, memory systems storing model weights, and data transfer channels between hardware components. To induce hardware errors, they could somehow achieve write access to memory systems, or physical access to create fault-heavy environments (e.g. radiation source). For the purposes of this paper, we will investigate the effects of the denial of service attack objective, specifically performance degradation.
+
+
+[todo: make a figure of the threat model]
+
 \section{Project Goals and Timeline}
 
 The goal of this project is to evaluate the effect of random bit flips on the output of LLMs and analyze the possible security hazards that these hardware errors could cause in real systems. We plan to do this by modeling various rates of bit flips and by injecting errors into various parts of the LLMs, and evaluating the robustness on a variety of different tests.
@@ -68,6 +75,7 @@ Below is a general timeline for what we want to accomplish and when.
 \end{itemize}
 
 Using this, we can turn the knobs to evaluate different kinds of error and add various tests to our test-suite as we continue to expand our results.
+
 
 \section{Methods}
 
@@ -150,7 +158,17 @@ However, the paper does not do any evaluation on the different of hardware error
 
 An interesting part of this paper is the evaluation of possible mitigations against hardware flips, which can also be evaluated in the context of LLMs. In addition, their evaluation had limited scope, and it could be interesting to expand on their analysis by testing a wider variety of errors and examining the tradeoffs of each.
 
+\cite{fidelity} performed resilience analysis on transient errors in logic components, but their framework is highly inefficient in the context of PyTorch, because they employ frequent to-and-back type conversions as PyTorch doesn't natively support bit operations in float tensors. \cite{thales} estimated DNN accuracy under transient faults and proposed a Monte Carlo-based estimation method. However, their analysis is also limited to transient errors and do not consider logic / data path errors which are permanent and more impactful.
+
 \begin{thebibliography}{Com79}
+
+\bibitem[He et. al, 2020]{fidelity} Yi He, Prasanna Balaprakash, and Yanjing Li. 2020. Fidelity: efficient resilience analysis framework for deep learning accelerators. In 2020 53rd Annual IEEE/ACM International Symposium on Microarchitecture (MICRO). IEEE, 270–281.
+
+\bibitem[Abhishek et. al, 2022]{thales} Abhishek Tyagi, Yiming Gan, Shaoshan Liu, Bo Yu, Paul Whatmough, and Yuhao Zhu. 2022. Thales: formulating and estimating architectural vulnerability factors for dnn accelerators. arXiv preprint arXiv:2212.02649
+
+\bibitem[Vaswani et. al, 2017]{transformer} Vaswani, Ashish, et al. 
+\newblock"Attention is all you need."
+
 \bibitem[Ma et al., 2023]{Ma23} D. Ma, X. Jiao, F. Lin, M. Zhang, A. Desmaison, T. Sellinger, D. Moore, S. Sankar.
 \newblock Evaluating and Enhancing Robustness of Deep Recommendation Systems Against Hardware Errors
 

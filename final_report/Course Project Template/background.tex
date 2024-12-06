@@ -1,27 +1,37 @@
 \section{Background and Related Work}
 \label{sec:relwork}
-In~\secref{sec:intro} you talked about the project at a very high-level. This is
-the section from where you will start giving details. First with things that are
-already done, and familiarize the reader with background information they will
-need to understand you work. 
+There is a related paper \cite{Ma23} that analyzes a model known as a recommendation system. In their work, they build the PyTEI package for injecting models. However, recommendation models differ significantly from LLMs so the overall effect could be quite different for the same error injections.
+
+However, the paper does not do any evaluation on the different of hardware errors in specific parts of the recommendation system, so the question of whether particular parts are more vulnerable is still open.
+
+An interesting part of this paper is the evaluation of possible mitigations against hardware flips, which can also be evaluated in the context of LLMs. In addition, their evaluation had limited scope, and it could be interesting to expand on their analysis by testing a wider variety of errors and examining the tradeoffs of each.
+
+\cite{fidelity} performed resilience analysis on transient errors in logic components, but their framework is highly inefficient in the context of PyTorch, because they employ frequent to-and-back type conversions as PyTorch doesn't natively support bit operations in float tensors. \cite{thales} estimated DNN accuracy under transient faults and proposed a Monte Carlo-based estimation method. However, their analysis is also limited to transient errors and do not consider logic / data path errors which are permanent and more impactful.
 
 
 \section{Threat model.}
-Often this section you will discuss the threat-model, but there is no strict consensus on that. 
+We present 2 case studies, relating to information disclosure and denial of service respectively. \\
+
+An attacker's goal is to cause information disclosure or cause a denial of service via system crash or significantly degrading the performance of the LLM. They may attack components such as edge AI chips and accelerators, CPUs and GPUs in LLM training, memory systems storing model weights, and data transfer channels between hardware components. To induce hardware errors, they could somehow achieve write access to memory systems, or physical access to create fault-heavy environments (e.g. radiation source). 
+
+\subsection{Case Studies}
+case 1 (information disclosure): An LLM is running on an edge device (like a smartwatch). The attacker jailbreaks the device, gaining write access to hardware, and inject bit errors with a probability $p$. The attacker then monitors the LLM output through API calls, observing that the output is NaN XX\% of the time. The attacker thus concludes that the LLM has YY number of parameters (see \ref{sec:nan} for more details). \\
+
+case 2 (denial of service): A physics research lab is using LLMs for running simulations of their experiments. An attacker somehow manages to convince the lab scientists to house the servers the LLM is running on in their reactor chamber, a source with high radiation. This environment causes many bit flip errors, causing frequent faulty outputs from the LLM.
+
+For the purposes of this paper, we will investigate the effects of the denial of service attack objective, specifically performance degradation.
 
 
-Here is how you cite papers. For example, we read papers in the
-class~\cite{rahul2016pwtypos,dodisetal:2004}.  And here is some random citation~\cite{Bojinov:2010:KLP,schechter:2010:pen,everspaugh2015pythia,bellare2009format,Juels:2014}
+\textcolor{red}{jeffrey todo: make a figure of the threat model}
+
 
 
 \section{Overview of the design}
 \label{sec:overview}
 
-And then just to showoff some \LaTeX skills, here is a Tikz plot.
-\input{images/mainflow.tex}
+We chose Hugging Face's implementations of Mistral-7B \cite{mistral7b} as our model of choice. We evaluated our models on \cite{DeepEval}, an open-source LLM benchmark, specifically the computer science and astronomy tests that have the injected LLM answer multiple choice questions. For each model with varying error rates, the score is computed as the proportions of correct answers. \textcolor{red}{abhi todo: details about layers and the score metric}
 
-You refer to a figure in the following way. In~\figref{fig:mainflow} we show
-some thing that is relevant for the Multisketch paper by Chatterjee et
-al.~\cite{chatterjee2019multisketches}. Add your bibliography to the
-\textsf{bib.bib} file. You can copy the Bibtex format citation from Google
-Scholar.
+\subsection{Design Choices}
+We originally chose GPT2 but noticed a lot of NaN outputs. See \ref{sec:nan} for analysis. Hence, we switched to an error model that injects \textit{value} errors instead. \\
+
+We also observed that GPT2 performance on the MMLU benchmark was equivalent to random guessing, which would not be informative of performance drops. We upgraded to Mistral-7B which has a 0.6 average accuracy.

@@ -1,12 +1,31 @@
 \section{Discussions}
-You can include some discussions about the future works for the project. For example, what would be some other methods that might be interesting to try, and why these ideas might work.
+There are still many possible things that one could try. As a group, we were heavily restricted by our computational resources, so with more computation resources
+and more time it would be possible to try many more different things, as well as trying some more state of the art models with many more parameters than
+Mistral-7B.
 
-If you work on a practical project, please provide some suggestions for the app to be more secure/privacy-friendly. If you work on a research project, please discuss about the limitations of your work. 
+It could be interesting to try inject errors into specific sections of each layer (such as attention or normalization), instead of just all the layers and see
+or all sections in a particular layer. We have confidence that this could give interesting results because of the high variation in some of our injection parameters,
+which suggests that where our random errors actually are injected into even with our given parameters is also important.
 
+It would also be interesting to look at the performance degradation on various other benchmarks such as translation, coding capabilities, or reasoning tasks.
+
+Our research is also limited in the sense that we looked at value injections. As a whole, silent bit errors seem to be completely catastrophic for
+some standard machine learning implementation. For example, in the usual case where the weights lie between $0$ and $1$, we've shown in \ref{sec:nan} that NaN
+is likely for any large amount of bit errors. In float16 representation, the errors tend to cause overflow which broke the evaluation framework that we were working in.
+The final case is int4 quantization. Here, bit errors actually tend to be fine. In addition, random bit errors here are close to random value errors, which justifies our choice to look at
+random value errors instead.
 
 \section{Conclusion}
 \label{sec:conclusion}
-What is the big take away from your research. Include any limitations or future work here. 
+The large takeaway is that all value errors are certainly not equal. It seems that errors in earlier levels tend to degrade the power of our LLM significantly more than errors at later levels.
+In addition, it seems that certain parts of the LLM tend to be more resistant to errors (such as the batch-normalization layer). In addition, we have shown that, in general,
+random bit errors in an LLM's weights tend to be catastrophic in the sense they have a high probability of completely breaking the LLM.
+
+The limitation in our work is in connecting these two cases. It's unknown if our small value errors are a good model for bit errors that do not completely break the LLM. Hence, it's unknown whether
+large variation errors will have a larger degrading effect than the ones we have injected. In addition, it is still unknown if our results on error degradation for specific layers still hold for
+the larger case of completely random bit errors.
+
+More research is needed for all the above mentioned cases to draw stronger conclusions on the security of LLM's to random bit flips.
 
 \section{Contributions of each teammate}
 Show who did what for the project, and who wrote what section for the report. 

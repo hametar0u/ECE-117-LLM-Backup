@@ -1,0 +1,95 @@
+%%% -*-BibTeX-*-
+%%% Do NOT edit. File created by BibTeX with style
+%%% ACM-Reference-Format-Journals [18-Jan-2012].
+
+\begin{thebibliography}{00}
+
+%%% ====================================================================
+%%% NOTE TO THE USER: you can override these defaults by providing
+%%% customized versions of any of these macros before the \bibliography
+%%% command.  Each of them MUST provide its own final punctuation,
+%%% except for \shownote{}, \showDOI{}, and \showURL{}.  The latter two
+%%% do not use final punctuation, in order to avoid confusing it with
+%%% the Web address.
+%%%
+%%% To suppress output of a particular field, define its macro to expand
+%%% to an empty string, or better, \unskip, like this:
+%%%
+%%% \newcommand{\showDOI}[1]{\unskip}   % LaTeX syntax
+%%%
+%%% \def \showDOI #1{\unskip}           % plain TeX syntax
+%%%
+%%% ====================================================================
+
+\ifx \showCODEN    \undefined \def \showCODEN     #1{\unskip}     \fi
+\ifx \showDOI      \undefined \def \showDOI       #1{#1}\fi
+\ifx \showISBNx    \undefined \def \showISBNx     #1{\unskip}     \fi
+\ifx \showISBNxiii \undefined \def \showISBNxiii  #1{\unskip}     \fi
+\ifx \showISSN     \undefined \def \showISSN      #1{\unskip}     \fi
+\ifx \showLCCN     \undefined \def \showLCCN      #1{\unskip}     \fi
+\ifx \shownote     \undefined \def \shownote      #1{#1}          \fi
+\ifx \showarticletitle \undefined \def \showarticletitle #1{#1}   \fi
+\ifx \showURL      \undefined \def \showURL       {\relax}        \fi
+% The following commands are used for tagged output and should be
+% invisible to TeX
+\providecommand\bibfield[2]{#2}
+\providecommand\bibinfo[2]{#2}
+\providecommand\natexlab[1]{#1}
+\providecommand\showeprint[2][]{arXiv:#2}
+
+\bibitem[\protect\citeauthoryear{Jiang, Sablayrolles, Mensch, Bamford, Chaplot,
+  de~las Casas, Bressand, Lengyel, Lample, Saulnier, Lavaud, Lachaux, Stock,
+  Scao, Lavril, Wang, Lacroix, and Sayed}{Jiang et~al\mbox{.}}{2023}]%
+        {jiang2023mistral7b}
+\bibfield{author}{\bibinfo{person}{Albert~Q. Jiang}, \bibinfo{person}{Alexandre
+  Sablayrolles}, \bibinfo{person}{Arthur Mensch}, \bibinfo{person}{Chris
+  Bamford}, \bibinfo{person}{Devendra~Singh Chaplot}, \bibinfo{person}{Diego
+  de~las Casas}, \bibinfo{person}{Florian Bressand}, \bibinfo{person}{Gianna
+  Lengyel}, \bibinfo{person}{Guillaume Lample}, \bibinfo{person}{Lucile
+  Saulnier}, \bibinfo{person}{Lélio~Renard Lavaud},
+  \bibinfo{person}{Marie-Anne Lachaux}, \bibinfo{person}{Pierre Stock},
+  \bibinfo{person}{Teven~Le Scao}, \bibinfo{person}{Thibaut Lavril},
+  \bibinfo{person}{Thomas Wang}, \bibinfo{person}{Timothée Lacroix}, {and}
+  \bibinfo{person}{William~El Sayed}.} \bibinfo{year}{2023}\natexlab{}.
+\newblock \bibinfo{title}{Mistral 7B}.
+\newblock   (\bibinfo{year}{2023}).
+\newblock
+\showeprint[arxiv]{cs.CL/2310.06825}
+\showURL{%
+\url{https://arxiv.org/abs/2310.06825}}
+
+
+\bibitem[\protect\citeauthoryear{Ma, Jiao, Lin, Zhang, Desmaison, Sellinger,
+  Moore, and Sankar}{Ma et~al\mbox{.}}{2023}]%
+        {Ma23}
+\bibfield{author}{\bibinfo{person}{Dongning Ma}, \bibinfo{person}{Xun Jiao},
+  \bibinfo{person}{Fred Lin}, \bibinfo{person}{Mengshi Zhang},
+  \bibinfo{person}{Alban Desmaison}, \bibinfo{person}{Thomas Sellinger},
+  \bibinfo{person}{Daniel Moore}, {and} \bibinfo{person}{Sriram Sankar}.}
+  \bibinfo{year}{2023}\natexlab{}.
+\newblock \bibinfo{title}{Evaluating and Enhancing Robustness of Deep
+  Recommendation Systems Against Hardware Errors}.
+\newblock   (\bibinfo{year}{2023}).
+\newblock
+\showeprint[arxiv]{cs.IR/2307.10244}
+\showURL{%
+\url{https://arxiv.org/abs/2307.10244}}
+
+
+\bibitem[\protect\citeauthoryear{Vaswani, Shazeer, Parmar, Uszkoreit, Jones,
+  Gomez, Kaiser, and Polosukhin}{Vaswani et~al\mbox{.}}{2023}]%
+        {vaswani2023attentionneed}
+\bibfield{author}{\bibinfo{person}{Ashish Vaswani}, \bibinfo{person}{Noam
+  Shazeer}, \bibinfo{person}{Niki Parmar}, \bibinfo{person}{Jakob Uszkoreit},
+  \bibinfo{person}{Llion Jones}, \bibinfo{person}{Aidan~N. Gomez},
+  \bibinfo{person}{Lukasz Kaiser}, {and} \bibinfo{person}{Illia Polosukhin}.}
+  \bibinfo{year}{2023}\natexlab{}.
+\newblock \bibinfo{title}{Attention Is All You Need}.
+\newblock   (\bibinfo{year}{2023}).
+\newblock
+\showeprint[arxiv]{cs.CL/1706.03762}
+\showURL{%
+\url{https://arxiv.org/abs/1706.03762}}
+
+
+\end{thebibliography}

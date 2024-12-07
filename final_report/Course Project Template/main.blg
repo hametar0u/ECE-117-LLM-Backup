@@ -1,0 +1,56 @@
+This is BibTeX, Version 0.99d (TeX Live 2021)
+Capacity: max_strings=200000, hash_size=200000, hash_prime=170003
+The top-level auxiliary file: main.aux
+The style file: ACM-Reference-Format.bst
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+Reallocated wiz_functions (elt_size=4) to 6000 items from 3000.
+Database file #1: bib.bib
+Warning--I didn't find a database entry for "fidelity"
+Warning--I didn't find a database entry for "thales"
+Warning--I didn't find a database entry for "mistral7b"
+Warning--I didn't find a database entry for "DeepEval"
+Warning--I didn't find a database entry for "hendrycks2021measuringmassivemultitasklanguage"
+Warning--I didn't find a database entry for "IEEE754"
+Reallocated singl_function (elt_size=4) to 100 items from 50.
+You've used 3 entries,
+            5706 wiz_defined-function locations,
+            1330 strings with 16241 characters,
+and the built_in function-call counts, 5370 in all, are:
+= -- 528
+> -- 398
+< -- 0
++ -- 136
+- -- 232
+* -- 568
+:= -- 698
+add.period$ -- 15
+call.type$ -- 3
+change.case$ -- 49
+chr.to.int$ -- 3
+cite$ -- 3
+duplicate$ -- 181
+empty$ -- 145
+format.name$ -- 148
+if$ -- 990
+int.to.chr$ -- 1
+int.to.str$ -- 0
+missing$ -- 0
+newline$ -- 73
+num.names$ -- 24
+pop$ -- 107
+preamble$ -- 1
+purify$ -- 61
+quote$ -- 0
+skip$ -- 79
+stack$ -- 0
+substring$ -- 519
+swap$ -- 9
+text.length$ -- 195
+text.prefix$ -- 0
+top$ -- 0
+type$ -- 90
+warning$ -- 0
+while$ -- 15
+width$ -- 0
+write$ -- 99
+(There were 6 warnings)

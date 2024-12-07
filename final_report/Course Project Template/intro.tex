@@ -6,8 +6,7 @@ and Meta's open source Llama. Much of the explosion has been driven by the creat
 
 Because of our lack of understanding of how these objects work, and the quick assimilation of these products into our daily lives, there are a variety of novel security risks that we are being introduced to. One specific error is not so common, but still of practical relevance, is a hardware failure in which a random bitflip occurs in the parameters of our model. An error of such a fashion could have drastic effects on our output, ranging from making the outputs gibberish to outright wrong.
 
-In this paper, we analyze how injecting bit errors into specific locations of a transformer and the LLM model as a whole affect the output. To this end, we use the GPT2 as a base model to test on. To inject errors into our base model we use the PyTEI package \cite{Ma23}. To quantify the effect of our errors, we compare the score of our base model to the score of the models with errors injected using the PyTEI package with DeepEval to evaluate.
-
+In this paper, we analyze how injecting bit errors into specific locations of a transformer and the LLM model as a whole affect the output. To this end, we use the Mistral-7B \cite{jiang2023mistral7b} as a base model to test on. To inject errors into our base model we use an extension of the PyTEI package introduced in \cite{Ma23}. To quantify the effect of our errors, we compare the score of our base model to the score of the models with errors injected using the PyTEI package with the MMLU framework supplied by DeepEval to evaluate.
 
 Our basic workflow is outlined in the below diagram
 

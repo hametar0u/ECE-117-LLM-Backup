@@ -2,7 +2,7 @@ texengine=pdflatex
 main.pdf : *.tex *.bib
 	${texengine}  --shell-escape main
 
-all: *.tex
+all: *.tex *.bib
 	${texengine}  --shell-escape main
 	bibtex main
 	${texengine} --shell-escape main

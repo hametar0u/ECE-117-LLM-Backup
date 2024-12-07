@@ -1,0 +1,67 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Evaluation}
+\label{sec:eval}
+
+\subsection{NaN Analysis}
+\label{sec:nan}
+
+In this section, we provide an analysis of the probability that the LLM outputs NaN. \\
+
+Let $F$ be an LLM model with $n$ parameters and $x$ be the input to the model. We would like to find $Pr(F(x) = NaN)$.
+
+Suppose a bit is flipped with probability $p$.
+
+Let $X$ be the value of a model parameter and $X^*$ be its perturbed value. Note that parameters are iid $\sim Uniform(0, 1)$ due to the design of LLMs [do you have a good source for this allen]. According to \cite{IEEE754}, a NaN value has all 1s in the exponent field, and a nonzero mantissa. Since $0 \le X \le 1$, the exponent field is $01111111$ (due to the +127 offset), and suppose there are $j$ 1s in the mantissa. \\
+
+Then, $X^* = NaN$ if the remaining exponent bit flipped, the rest of the exponent bits don't flip, and not all $j$ mantissa bits turn to 0. Thus,
+\begin{align*}
+	Pr(X^* = NaN) &= Pr(\text{only one exponent bit is flipped}) \\
+    & \quad \cdot (1 - Pr(\text{all mantissa bits are 0})) \\
+	&= p(1 - p)^7 * (1 - p^j(1 - p)^{23 - j})
+\end{align*}
+
+We can represent the value of mantissa as a random variable $\sim Binom(23, 0.5)$. Thus,
+
+\begin{align*}
+	Pr(X^* = NaN) &= \sum_j^{23} Pr(X^* = NaN \mid X \text{ has $j$ mantissa 1s}) \\
+    & \quad \cdot Pr(X\text{ has $j$ mantissa 1s}) \\
+	&= \sum_j^{23} p(1 - p)^7 * (1 - p^j(1 - p)^{23 - j})\binom{23}{j}0.5^j0.5^{23 - j} \\
+	&= 2^{-23} p (1 - p)^7 \left(\sum_{j=0}^{23}[1 - p^j(1 - p)^{23 - j}] \binom{23}{j}\right) \\
+	&= 2^{-23} p (1 - p)^7 \left(\sum_{j=0}^{23}\binom{23}{j} - \sum_{j=0}^{23}p^j(1 - p)^{23 - j} \binom{23}{j}\right) \\
+	&= 2^{-23} p (1 - p)^7(2^{23} - 1) \\
+	&= p(1 - p)^7(1 - 2^{-23})
+\end{align*}
+
+Now putting everything together, we note that the model will output NaN if any of the parameters of the model are NaN, due to NaN propagation. Thus,
+
+\begin{align*}
+	Pr(F(x) = NaN) &= Pr(\text{at least one parameter is NaN}) \\
+	&= 1 - Pr(\text{all parameters are not NaN}) \\
+	&= 1 - \prod_{i=1}^n Pr(X_i \neq NaN) \\
+	&= 1 - Pr(X^* \neq NaN)^n \\
+	&= 1 - (1 - Pr(X^* = NaN))^n \\
+	&= 1 - (1 - p(1 - p)^7(1 - 2^{-23}))^n
+\end{align*}
+
+For $p = 10^{-9}$ and $n \approx 130 * 10^6$ (GPT-2), we get $Pr(F(x) = NaN) \approx 0.1$, and for $p = 10^{-8}$, we get $Pr(F(x) = NaN) \approx 0.7$, which explains why at a low error rate, the model still outputs NaN quite consistently.
+
+\subsection{actual shit}
+
+The results section should have the results of your experiments and
+measurements. Evaluation is the most important part of the research. Sometime
+you might want to split it into more than one section depending on the type of the project.
+
+
+
+Again make sure you give enough details so that the reader can reproduce your
+evaluation. Your GitHub code is not a replacement of the details, GitHub will
+perish, your paper will remain in this world for centuries to come. Of course,
+you need strike a balance between mundane details vs what makes your evaluation
+unique.
+
+
+
+
+
+
+

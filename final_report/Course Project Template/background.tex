@@ -29,7 +29,7 @@ For the purposes of this paper, we will investigate the effects of the denial of
 \section{Overview of the design}
 \label{sec:overview}
 
-We chose Hugging Face's implementations of Mistral-7B \cite{mistral7b} as our model of choice. We evaluated our models on \cite{DeepEval}, an open-source LLM benchmark, specifically the computer science and astronomy tests that have the injected LLM answer multiple choice questions. For each model with varying error rates, the score is computed as the proportions of correct answers. \textcolor{red}{abhi todo: details about layers and the score metric}
+We chose Hugging Face's implementations of Mistral-7B \cite{jiang2023mistral7b} as our model of choice. We evaluated our models on \cite{hendrycks2021measuringmassivemultitasklanguage}, an open-source LLM benchmark, specifically the computer science and astronomy tests that have the injected LLM answer multiple choice questions. For each model with varying error rates, the score is computed as the proportions of correct answers. \textcolor{red}{abhi todo: details about layers and the score metric}
 
 \subsection{Design Choices}
 We originally chose GPT2 but noticed a lot of NaN outputs. See \ref{sec:nan} for analysis. Hence, we switched to an error model that injects \textit{value} errors instead. \\

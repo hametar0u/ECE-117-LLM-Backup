@@ -47,10 +47,43 @@ For $p = 10^{-9}$ and $n \approx 130 * 10^6$ (GPT-2), we get $Pr(F(x) = NaN) \ap
 
 \subsection{Variation by Level}
 
+\subsubsection{Probability Variation}
+We began by analyzing, at each level, how variations in probability effect the evaluation on the MMLU benchmark at various probability from $1e-7$ to $1e-3$.
 
+As mentioned before, for computational reasons we grouped up layers into groups of size $4$. For ease of viewing this result, we only present the value for layer groups $1, 2, 7$ and $8$. A similar pattern
+holds for all unshown groups.
 
+Below are our results for each layer group with various probabilities.
 
+\begin{figure}[!htbp]
+    \centering
+    \includegraphics[width=1.0\linewidth]{images/varyprob.png}
+    \caption{Score when Varying Probability}
+    \label{fig:varyprob}
+\end{figure}
 
+As one can notice, for probabilities $1e-6$ (this is about 200 total errors for each layer group) there is no noticeable negative effect that our injected errors have on the model.
+
+On the other hand, for probabilities $1e-4$ (about 20000 total errors), the output of our LLM for each layer that we have is essentially no better than random guessing, no matter which layer we have injected into.
+
+The only layer where something interesting seems to be happening is at the $1e-5$ parameter, so we look into this further in the below section.
+
+\subsubsection{Zooming in on 1e-5}
+
+\begin{figure}[!htbp]
+    \centering
+    \includegraphics[width=1.0\linewidth]{images/varylayer.png}
+    \caption{Score when Varying Layers with p = 1e-5}
+    \label{fig:varylayer}
+\end{figure}
+
+There are a few interesting things to notice here.
+
+The first is that there does seem to be an effect of the layer on the error injection. For example, errors later layers seem to have less of a degratory effect on the efficacy of the LLM compared to earlier layers.
+This is certainly an interesting result that seems to suggest that errors in earlier layers propagate to later layers.
+
+Another interesting thing to note is that many there does seem to be a large amount of variation. We will explore this in a later section, but for now it suffices to say that this is because the variation in our error injection process
+means that some more vulnerable components within the individual layers also have a large effect on the total degradation of the LLM.
 
 
 

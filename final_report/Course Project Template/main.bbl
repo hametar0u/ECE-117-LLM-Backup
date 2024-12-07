@@ -37,6 +37,47 @@
 \providecommand\natexlab[1]{#1}
 \providecommand\showeprint[2][]{arXiv:#2}
 
+\bibitem[\protect\citeauthoryear{??}{IEE}{2019}]%
+        {IEEE754}
+ \bibinfo{year}{2019}\natexlab{}.
+\newblock \showarticletitle{IEEE Standard for Floating-Point Arithmetic}.
+\newblock \bibinfo{journal}{{\em IEEE Std 754-2019 (Revision of IEEE
+  754-2008)\/}} (\bibinfo{year}{2019}), \bibinfo{pages}{1--84}.
+\newblock
+\showDOI{%
+\url{https://doi.org/10.1109/IEEESTD.2019.8766229}}
+
+
+\bibitem[\protect\citeauthoryear{He, Balaprakash, and Li}{He
+  et~al\mbox{.}}{2020}]%
+        {fidelity}
+\bibfield{author}{\bibinfo{person}{Yi He}, \bibinfo{person}{Prasanna
+  Balaprakash}, {and} \bibinfo{person}{Yanjing Li}.}
+  \bibinfo{year}{2020}\natexlab{}.
+\newblock \showarticletitle{Fidelity: Efficient Resilience Analysis Framework
+  for Deep Learning Accelerators}. In \bibinfo{booktitle}{{\em 2020 53rd Annual
+  IEEE/ACM International Symposium on Microarchitecture (MICRO)}}.
+  \bibinfo{pages}{270--281}.
+\newblock
+\showDOI{%
+\url{https://doi.org/10.1109/MICRO50266.2020.00033}}
+
+
+\bibitem[\protect\citeauthoryear{Hendrycks, Burns, Basart, Zou, Mazeika, Song,
+  and Steinhardt}{Hendrycks et~al\mbox{.}}{2021}]%
+        {hendrycks2021measuringmassivemultitasklanguage}
+\bibfield{author}{\bibinfo{person}{Dan Hendrycks}, \bibinfo{person}{Collin
+  Burns}, \bibinfo{person}{Steven Basart}, \bibinfo{person}{Andy Zou},
+  \bibinfo{person}{Mantas Mazeika}, \bibinfo{person}{Dawn Song}, {and}
+  \bibinfo{person}{Jacob Steinhardt}.} \bibinfo{year}{2021}\natexlab{}.
+\newblock \bibinfo{title}{Measuring Massive Multitask Language Understanding}.
+\newblock   (\bibinfo{year}{2021}).
+\newblock
+\showeprint[arxiv]{cs.CY/2009.03300}
+\showURL{%
+\url{https://arxiv.org/abs/2009.03300}}
+
+
 \bibitem[\protect\citeauthoryear{Jiang, Sablayrolles, Mensch, Bamford, Chaplot,
   de~las Casas, Bressand, Lengyel, Lample, Saulnier, Lavaud, Lachaux, Stock,
   Scao, Lavril, Wang, Lacroix, and Sayed}{Jiang et~al\mbox{.}}{2023}]%
@@ -74,6 +115,22 @@
 \showeprint[arxiv]{cs.IR/2307.10244}
 \showURL{%
 \url{https://arxiv.org/abs/2307.10244}}
+
+
+\bibitem[\protect\citeauthoryear{Tyagi, Gan, Liu, Yu, Whatmough, and Zhu}{Tyagi
+  et~al\mbox{.}}{2024}]%
+        {thales}
+\bibfield{author}{\bibinfo{person}{Abhishek Tyagi}, \bibinfo{person}{Yiming
+  Gan}, \bibinfo{person}{Shaoshan Liu}, \bibinfo{person}{Bo Yu},
+  \bibinfo{person}{Paul Whatmough}, {and} \bibinfo{person}{Yuhao Zhu}.}
+  \bibinfo{year}{2024}\natexlab{}.
+\newblock \bibinfo{title}{Thales: Formulating and Estimating Architectural
+  Vulnerability Factors for DNN Accelerators}.
+\newblock   (\bibinfo{year}{2024}).
+\newblock
+\showeprint[arxiv]{cs.AR/2212.02649}
+\showURL{%
+\url{https://arxiv.org/abs/2212.02649}}
 
 
 \bibitem[\protect\citeauthoryear{Vaswani, Shazeer, Parmar, Uszkoreit, Jones,

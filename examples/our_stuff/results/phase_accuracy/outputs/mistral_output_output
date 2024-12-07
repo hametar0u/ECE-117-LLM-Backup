@@ -1,7 +1,12 @@
-Injected at output with prob: 7 | Score: 0.6190476190476191
-Injected at output with prob: 6 | Score: 0.5674603174603174
-Injected at output with prob: 5 | Score: 0.5634920634920635
-Injected at output with prob: 4 | Score: 0.5357142857142857
-Injected at output with prob: 3 | Score: 0.4246031746031746
-Injected at output with prob: 2 | Score: 0.20634920634920634
-Injected at output with prob: 1 | Score: 0.20634920634920634
+Injected at output with prob: 7 | Score: 0.6190476190476191 | Injected Count: 13.4217728
+Injected at output with prob: 6 | Score: 0.5674603174603174 | Injected Count: 134.217728
+Injected at output with prob: 5 | Score: 0.5634920634920635 | Injected Count: 1342.17728
+Injected at output with prob: 4 | Score: 0.5357142857142857 | Injected Count: 13421.7728
+Injected at output with prob: 3 | Score: 0.4246031746031746 | Injected Count: 134217.728
+Injected at output with prob: 2 | Score: 0.20634920634920634 | Injected Count: 1342177.28
+Injected at output with prob: 1 | Score: 0.20634920634920634 | Injected Count: 13421772.8
+
+Total parameters: 134217728
+Total weights: 1
+
+Baseline Benchmark Score: 0.5793650793650794

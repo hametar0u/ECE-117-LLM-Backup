@@ -1,7 +1,12 @@
-Injected at attention with prob: 7 | Score: 0.6111111111111112
-Injected at attention with prob: 6 | Score: 0.5714285714285714
-Injected at attention with prob: 5 | Score: 0.23412698412698413
-Injected at attention with prob: 4 | Score: 0.25
-Injected at attention with prob: 3 | Score: 0.24206349206349206
-Injected at attention with prob: 2 | Score: 0.24206349206349206
-Injected at attention with prob: 1 | Score: 0.23412698412698413
+Injected at attention with prob: 7 | Score: 0.6111111111111112 | Injected Count: 134.2177280
+Injected at attention with prob: 6 | Score: 0.5714285714285714 | Injected Count: 1342.177280
+Injected at attention with prob: 5 | Score: 0.23412698412698413 | Injected Count: 13421.77280
+Injected at attention with prob: 4 | Score: 0.25 | Injected Count: 134217.7280
+Injected at attention with prob: 3 | Score: 0.24206349206349206 | Injected Count: 1342177.280
+Injected at attention with prob: 2 | Score: 0.24206349206349206 | Injected Count: 13421772.80
+Injected at attention with prob: 1 | Score: 0.23412698412698413 | Injected Count: 134217728.0
+
+Total parameters: 1342177280
+Total weights: 128
+
+Baseline Benchmark Score: 0.5793650793650794

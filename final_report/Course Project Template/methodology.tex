@@ -13,10 +13,22 @@ result section might be bigger.)
 Make sure you give enough details so that the reader is able to reproduce your
 work.
 
+\subsection{Error Injection}
+In order to simulate bit flips, we load the model parameters, inject errors into them, save the injected weights,
+and load the new weights into a perturbed model. 
+
+To achieve this, we use PyTEI, which provides a flexible API that can generate bit error maps for each part of the model parameters. 
+First, we generate bit masks for all parameters we wish to inject into, with one boolean value for each bit in the parameter when stored as IEEE floats.
+Then, we specify the probability of a simulated SDC error occuring in the affected parameters, and using PyTorch's implementation of DropOut to efficiently
+zero out most bits according to the error rate. The mask is then XOR-ed with the stored parameters, where each 1 bit in the mask will trigger a bit flip.
+
+In later experiments, we extended the functionality of PyTEI by creating an API for injecting value errors. A value error occurs when the entire float is replaced with a pre-specified incorrect value. 
+Each float in the parameter tensor is still corrupted independently with a specified probability. 
+
 \subsection{Evaluation}
 \begin{figure}
     \centering
-    \includegraphics[width=1.0\linewidth]{Course Project Template//images/evaluation-pipeline.png}
+    \includegraphics[width=1.0\linewidth]{Course Project Template/images/evaluation-pipeline.png}
     \caption{Evaluation Pipeline}
     \label{fig:eval-pipeline}
 \end{figure}

@@ -1,0 +1,86 @@
+Parameters for phase 'attention' have been written to mistral_target_attention
+Running with injections at attention with prob: 7
+
+Injector initialized.
+Error probability: 1e-07
+Data type: torch.float16
+Error model: bit
+/kaggle/input/pytei-files/pytei.py:120: UserWarning: To copy construct from a tensor, it is recommended to use sourceTensor.clone().detach() or sourceTensor.clone().detach().requires_grad_(True), rather than torch.tensor(sourceTensor).
+  mask = torch.tensor((torch.rand(shape) < self.p).long(), dtype=dtype, device=self.device)
+Loading widget...
+Loading widget...
+Loading widget...
+Loading widget...
+Loading widget...
+Loading widget...
+Processing high_school_computer_science:   0%|          | 0/100 [00:00<?, ?it/s]/tmp/ipykernel_30/2414658023.py:41: PydanticDeprecatedSince20: The `schema` method is deprecated; use `model_json_schema` instead. Deprecated in Pydantic V2.0 to be removed in V3.0. See Pydantic V2 Migration Guide at https://errors.pydantic.dev/2.10/migration/
+  parser = JsonSchemaParser(schema.schema())
+Processing high_school_computer_science: 100%|██████████| 100/100 [07:37<00:00,  4.57s/it]
+MMLU Task Accuracy (task=high_school_computer_science): 0.63
+Loading widget...
+Loading widget...
+Loading widget...
+Processing astronomy:   0%|          | 0/152 [00:00<?, ?it/s]/tmp/ipykernel_30/2414658023.py:41: PydanticDeprecatedSince20: The `schema` method is deprecated; use `model_json_schema` instead. Deprecated in Pydantic V2.0 to be removed in V3.0. See Pydantic V2 Migration Guide at https://errors.pydantic.dev/2.10/migration/
+  parser = JsonSchemaParser(schema.schema())
+Processing astronomy: 100%|██████████| 152/152 [10:55<00:00,  4.31s/it]
+MMLU Task Accuracy (task=astronomy): 0.5986842105263158
+Overall MMLU Accuracy: 0.6111111111111112
+Injected at attention with prob: 7 | Score: 0.6111111111111112
+
+Running with injections at attention with prob: 6
+
+Injector initialized.
+Error probability: 1e-06
+Data type: torch.float16
+Error model: bit
+/kaggle/input/pytei-files/pytei.py:120: UserWarning: To copy construct from a tensor, it is recommended to use sourceTensor.clone().detach() or sourceTensor.clone().detach().requires_grad_(True), rather than torch.tensor(sourceTensor).
+  mask = torch.tensor((torch.rand(shape) < self.p).long(), dtype=dtype, device=self.device)
+Processing high_school_computer_science: 100%|██████████| 100/100 [07:38<00:00,  4.58s/it]
+MMLU Task Accuracy (task=high_school_computer_science): 0.56
+Processing astronomy: 100%|██████████| 152/152 [10:49<00:00,  4.27s/it]
+MMLU Task Accuracy (task=astronomy): 0.5789473684210527
+Overall MMLU Accuracy: 0.5714285714285714
+Injected at attention with prob: 6 | Score: 0.5714285714285714
+
+Running with injections at attention with prob: 5
+
+Injector initialized.
+Error probability: 1e-05
+Data type: torch.float16
+Error model: bit
+Processing high_school_computer_science: 100%|██████████| 100/100 [07:10<00:00,  4.31s/it]
+MMLU Task Accuracy (task=high_school_computer_science): 0.28
+Processing astronomy: 100%|██████████| 152/152 [10:52<00:00,  4.29s/it]
+MMLU Task Accuracy (task=astronomy): 0.20394736842105263
+Overall MMLU Accuracy: 0.23412698412698413
+Injected at attention with prob: 5 | Score: 0.23412698412698413
+
+Running with injections at attention with prob: 4
+
+Injector initialized.
+Error probability: 0.0001
+Data type: torch.float16
+Error model: bit
+Processing high_school_computer_science: 100%|██████████| 100/100 [05:43<00:00,  3.44s/it]
+MMLU Task Accuracy (task=high_school_computer_science): 0.2
+Processing high_school_computer_science: 100%|██████████| 100/100 [06:05<00:00,  3.66s/it]
+MMLU Task Accuracy (task=high_school_computer_science): 0.27
+Processing high_school_computer_science: 100%|██████████| 100/100 [06:08<00:00,  3.69s/it]
+MMLU Task Accuracy (task=high_school_computer_science): 0.24
+Processing astronomy: 100%|██████████| 152/152 [09:05<00:00,  3.59s/it]
+MMLU Task Accuracy (task=astronomy): 0.24342105263157895
+Overall MMLU Accuracy: 0.24206349206349206
+Injected at attention with prob: 2 | Score: 0.24206349206349206
+
+Running with injections at attention with prob: 1
+
+Injector initialized.
+Error probability: 0.1
+Data type: torch.float16
+Error model: bit
+Processing high_school_computer_science: 100%|██████████| 100/100 [06:09<00:00,  3.69s/it]
+MMLU Task Accuracy (task=high_school_computer_science): 0.24
+Processing astronomy: 100%|██████████| 152/152 [09:13<00:00,  3.64s/it]
+MMLU Task Accuracy (task=astronomy): 0.23026315789473684
+Overall MMLU Accuracy: 0.23412698412698413
+Injected at attention with prob: 1 | Score: 0.23412698412698413

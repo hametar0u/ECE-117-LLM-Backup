@@ -29,9 +29,23 @@ For the purposes of this paper, we will investigate the effects of the denial of
 \section{Overview of the design}
 \label{sec:overview}
 
-We chose Hugging Face's implementations of Mistral-7B \cite{jiang2023mistral7b} as our model of choice. We evaluated our models on \cite{hendrycks2021measuringmassivemultitasklanguage}, an open-source LLM benchmark, specifically the computer science and astronomy tests that have the injected LLM answer multiple choice questions. For each model with varying error rates, the score is computed as the proportions of correct answers. \textcolor{red}{abhi todo: details about layers and the score metric}
+We chose Hugging Face's implementations of Mistral-7B \cite{jiang2023mistral7b} as our model of choice. We evaluated our models on \cite{hendrycks2021measuringmassivemultitasklanguage}, an open-source LLM benchmark, specifically the computer science and astronomy tests that have the injected LLM answer multiple choice questions. For each model with varying error rates, the score is computed as the proportions of correct answers.
 
 \subsection{Design Choices}
 We originally chose GPT2 but noticed a lot of NaN outputs. See \ref{sec:nan} for analysis. Hence, we switched to an error model that injects \textit{value} errors instead. \\
 
-We also observed that GPT2 performance on the MMLU benchmark was equivalent to random guessing, which would not be informative of performance drops. We upgraded to Mistral-7B which has a 0.6 average accuracy.
+We also observed that GPT2 performance on the MMLU benchmark was equivalent to random guessing, which would not be informative of performance drops. We upgraded to Mistral-7B which has a 0.58 average accuracy.
+
+\subsection{Design Approaches}
+\subsubsection{Sequential Injection} 
+To analyze the impact of errors in sequential layers on model accuracy, we grouped the decoder layers into sets of four. This grouping reduced computational overhead while still enabling the modeling of sequential error injection behavior. Weights within each group were tracked, and errors were injected with varying probabilities ranging from $10^-9$ to $10^-1$. For each error likelihood, the model’s accuracy on the MMLU benchmark was recorded.
+
+\subsubsection{Functional Injection} 
+In order to determine if, and what, components of an LLM (i.e Attention Mechanism, Embedding, etc) were less resistant to SDC, we chose to inject errors into weights associated with these components. For each component's weights, errors were injected with a varying probability from $10^-9$ to $10^-1$. For each likelihood of errors, model accuracy on the MMLU benchmark was recorded.
+
+\begin{figure}
+    \centering
+    \includegraphics[width=1\linewidth]{images/Mistral-7B-Arch.png}
+    \caption{Injected Model's Architecture}
+    \label{fig:enter-label}
+\end{figure}

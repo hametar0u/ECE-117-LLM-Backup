@@ -45,7 +45,7 @@ Now putting everything together, we note that the model will output NaN if any o
 
 For $p = 10^{-9}$ and $n \approx 130 * 10^6$ (GPT-2), we get $Pr(F(x) = NaN) \approx 0.1$, and for $p = 10^{-8}$, we get $Pr(F(x) = NaN) \approx 0.7$, which explains why at a low error rate, the model still outputs NaN quite consistently.
 
-\subsection{Variation by Level}
+\subsection{Variation by Layer}
 
 \subsubsection{Probability Variation}
 We began by analyzing, at each level, how variations in probability effect the evaluation on the MMLU benchmark at various probability from $1e-7$ to $1e-3$.
@@ -85,6 +85,95 @@ This is certainly an interesting result that seems to suggest that errors in ear
 Another interesting thing to note is that many there does seem to be a large amount of variation. We will explore this in a later section, but for now it suffices to say that this is because the variation in our error injection process
 means that some more vulnerable components within the individual layers also have a large effect on the total degradation of the LLM.
 
+\subsection{Variation by Component}
+\subsubsection{Probability Variation}
+We begin by analyzing, for each LLM component (i.e Attention Mechanism, Embedding, etc) how variations in the likelihood of SDC, from $10^{-9}$ to $10^{-1}$ effect the model's accuracy. Below are these results.
+
+\begin{figure}[!htbp]
+    \centering
+    \includegraphics[width=1\linewidth]{images/component-accuracy.png}
+    \caption{Likelihood of SDC vs Model Accuracy}
+    \label{fig:varcomp}
+\end{figure}
+
+From the above results, it is evident that certain components are more sensitive to SDC in terms of model accuracy and performance. To quantify this sensitivity, we calculate the \textbf{Relative Change in Accuracy}. \[
+\text{Relative Change in Accuracy} = \frac{\text{Accuracy}_{\text{baseline}} - \text{Accuracy}_{\text{faulty}}}{\text{Accuracy}_{\text{baseline}}}
+\]
+Below is a graph of this metric for every likelihood.
+
+\begin{figure}[!htbp]
+    \centering
+    \includegraphics[width=1\linewidth]{images/rel_acc_loss.png}
+    \caption{Likelihood of SDC vs Relative Change in Accuracy Loss}
+    \label{fig:enter-label}
+\end{figure}
+
+This visualization shows us how each component, at each likelihood of SDC, degrades in performance relative to the baseline accuracy of the model. Evidently, components like Normalization and LM Head are much more resilient to SDC than the Feed-Forward and Attention components within the decoder layers of the model.
+
+Furthermore, the thresholds at which model performance degrades by 50\% across components are visualized below:
+\begin{figure}[!htbp]
+    \centering
+    \includegraphics[width=1\linewidth]{images/threshold.png}
+    \caption{Thresholds for Model Performance to Degrade Model Performance by 50\%}
+    \label{fig:enter-label}
+\end{figure}
+
+To develop a comprehensive sensitivity metric for each component, considering all SDC likelihoods, we compute the \textbf{Average Weighted Relative Change in Accuracy Loss (AWRCL)}. \[
+\text{AWRCL} = \frac{\sum_{i=1}^{n} w_i \cdot \left( \frac{\text{Accuracy}_{\text{baseline}} - \text{Accuracy}_{i}}{\text{Accuracy}_{\text{baseline}}} \right)}{\sum_{i=1}^{n} w_i}
+\]
+The ranking of LLM components by this metric is displayed below.
+
+\begin{figure}[!htbp]
+    \centering
+    \includegraphics[width=1\linewidth]{images/comp-ranking.png}
+    \caption{Ranking of Components by Average Weighted Relative Change in Accuracy Loss with Respect to SDC Likelihood}
+    \label{fig:enter-label}
+\end{figure}
+These results reveal that \textbf{Normalization} and \textbf{LM Head} components are the most resilient to SDC. Notably, the LM Head, responsible for mapping vector representations to vocabulary probabilities, shows remarkable resistance despite its outputs being terminal. This aligns with the general observation that errors in earlier layers have a more pronounced impact on model accuracy. The unexpected resilience of the Normalization component, however, warrants further investigation.
+
+\subsubsection{Normalizing for Component Size}
+
+While the previous analysis compares accuracy degradation by SDC likelihood, components with fewer parameters naturally experience fewer total corruptions. To address this, we normalize the results by the number of parameters in each component, as shown below.
+
+\begin{figure}[!htbp]
+    \centering
+    \includegraphics[width=1\linewidth]{images/norm-rel-acc-loss.png}
+    \caption{Number of Injected Errors vs Relative Change in Accuracy Loss}
+    \label{fig:enter-label}
+\end{figure}
+The normalized rankings of components, accounting for the number of injected errors, are presented here:
+
+\begin{figure}[!htbp]
+    \centering
+    \includegraphics[width=1\linewidth]{images/norm-comp-ranking.png}
+    \caption{Ranking of Components by Average Weighted Relative Change in Accuracy Loss with Respect to Injected Error Count}
+    \label{fig:enter-label}
+\end{figure}
+
+The results suggest that, excluding the Normalization component's AWRCL, the sensitivity of components to SDC becomes roughly similar when normalized for parameter count. This finding highlights that smaller components require a proportionally larger fraction of errors to experience equivalent accuracy degradation compared to larger components. Consequently, smaller components inherently exhibit greater resilience to SDC.
+
+In real-world scenarios, assuming uniform bit error rates across memory, the proportion of errors across components is expected to be similar. Thus, these findings offer practical insights into resource-constrained environments, where prioritizing protection (e.g., using ECC or activation clipping) for specific components is critical.
+
+\subsubsection{Formula to Model Accuracy Degradation}
+
+Through our results, and analysis, we aim to provide a formula to model how sensitive a component is to accuracy degradation as a result of SDC, by identifying key factors.
 
 
+\[
+D \propto N \cdot S_c\cdot P_f \cdot A \cdot (1 - R)
+\]
+
+\text{Where:}
+\begin{align*}
+D & : \text{Performance degradation,} \\
+N & : \text{Number of parameters or operations in the component,} \\
+S_c & : \text{Sensitivity factor for the component, measured by the AWRCL} \\
+P_f & : \text{Fault likelihood (probability of a fault per parameter or operation),} \\
+A & : \text{Amplification factor,} \\
+R & : \text{Redundancy factor,} \\
+\end{align*}
+
+This formula captures the relationships derived from our experiments with sequential layer injections and component-level injections. Notably, the \textbf{Amplification Factor} $A$ encapsulates the tendency for earlier layers to propagate faults more significantly through the model. Conversely, the \textbf{Redundancy Factor} $R$ represents the degree of overlap in calculations, typically higher in larger components.
+
+In the case of the sparse Mistral 7B model, reduced redundancy contributes to greater sensitivity in larger layers, providing additional context to our earlier observation that larger components are generally less resilient to SDC.
 

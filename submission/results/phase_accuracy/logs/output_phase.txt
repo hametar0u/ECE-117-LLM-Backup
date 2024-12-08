@@ -1,0 +1,108 @@
+Parameters for phase 'output' have been written to mistral_target_output
+Running with injections at output with prob: 7
+
+Injector initialized.
+Error probability: 1e-07
+Data type: torch.float16
+Error model: bit
+/kaggle/input/pytei-files/pytei.py:120: UserWarning: To copy construct from a tensor, it is recommended to use sourceTensor.clone().detach() or sourceTensor.clone().detach().requires_grad_(True), rather than torch.tensor(sourceTensor).
+  mask = torch.tensor((torch.rand(shape) < self.p).long(), dtype=dtype, device=self.device)
+Loading widget...
+Loading widget...
+Loading widget...
+Loading widget...
+Loading widget...
+Loading widget...
+Processing high_school_computer_science:   0%|          | 0/100 [00:00<?, ?it/s]/tmp/ipykernel_78/2414658023.py:41: PydanticDeprecatedSince20: The `schema` method is deprecated; use `model_json_schema` instead. Deprecated in Pydantic V2.0 to be removed in V3.0. See Pydantic V2 Migration Guide at https://errors.pydantic.dev/2.10/migration/
+  parser = JsonSchemaParser(schema.schema())
+Processing high_school_computer_science: 100%|██████████| 100/100 [07:03<00:00,  4.23s/it]
+MMLU Task Accuracy (task=high_school_computer_science): 0.64
+Loading widget...
+Loading widget...
+Loading widget...
+Processing astronomy:   0%|          | 0/152 [00:00<?, ?it/s]/tmp/ipykernel_78/2414658023.py:41: PydanticDeprecatedSince20: The `schema` method is deprecated; use `model_json_schema` instead. Deprecated in Pydantic V2.0 to be removed in V3.0. See Pydantic V2 Migration Guide at https://errors.pydantic.dev/2.10/migration/
+  parser = JsonSchemaParser(schema.schema())
+Processing astronomy: 100%|██████████| 152/152 [10:07<00:00,  3.99s/it]
+MMLU Task Accuracy (task=astronomy): 0.6052631578947368
+Overall MMLU Accuracy: 0.6190476190476191
+Injected at output with prob: 7 | Score: 0.6190476190476191
+
+Running with injections at output with prob: 6
+
+Injector initialized.
+Error probability: 1e-06
+Data type: torch.float16
+Error model: bit
+/kaggle/input/pytei-files/pytei.py:120: UserWarning: To copy construct from a tensor, it is recommended to use sourceTensor.clone().detach() or sourceTensor.clone().detach().requires_grad_(True), rather than torch.tensor(sourceTensor).
+  mask = torch.tensor((torch.rand(shape) < self.p).long(), dtype=dtype, device=self.device)
+Processing high_school_computer_science: 100%|██████████| 100/100 [07:09<00:00,  4.29s/it]
+MMLU Task Accuracy (task=high_school_computer_science): 0.57
+Processing astronomy: 100%|██████████| 152/152 [10:09<00:00,  4.01s/it]
+MMLU Task Accuracy (task=astronomy): 0.5657894736842105
+Overall MMLU Accuracy: 0.5674603174603174
+Injected at output with prob: 6 | Score: 0.5674603174603174
+
+Running with injections at output with prob: 5
+
+Injector initialized.
+Error probability: 1e-05
+Data type: torch.float16
+Error model: bit
+Processing high_school_computer_science: 100%|██████████| 100/100 [07:05<00:00,  4.26s/it]
+MMLU Task Accuracy (task=high_school_computer_science): 0.58
+Processing astronomy: 100%|██████████| 152/152 [10:07<00:00,  4.00s/it]
+MMLU Task Accuracy (task=astronomy): 0.5526315789473685
+Overall MMLU Accuracy: 0.5634920634920635
+Injected at output with prob: 5 | Score: 0.5634920634920635
+
+Running with injections at output with prob: 4
+
+Injector initialized.
+Error probability: 0.0001
+Data type: torch.float16
+Error model: bit
+Processing high_school_computer_science: 100%|██████████| 100/100 [06:16<00:00,  3.76s/it]
+MMLU Task Accuracy (task=high_school_computer_science): 0.53
+Processing astronomy: 100%|██████████| 152/152 [08:30<00:00,  3.36s/it]
+MMLU Task Accuracy (task=astronomy): 0.5394736842105263
+Overall MMLU Accuracy: 0.5357142857142857
+Injected at output with prob: 4 | Score: 0.5357142857142857
+
+Running with injections at output with prob: 3
+
+Injector initialized.
+Error probability: 0.001
+Data type: torch.float16
+Error model: bit
+Processing high_school_computer_science: 100%|██████████| 100/100 [06:45<00:00,  4.05s/it]
+MMLU Task Accuracy (task=high_school_computer_science): 0.43
+Processing astronomy: 100%|██████████| 152/152 [09:33<00:00,  3.78s/it]
+MMLU Task Accuracy (task=astronomy): 0.42105263157894735
+Overall MMLU Accuracy: 0.4246031746031746
+Injected at output with prob: 3 | Score: 0.4246031746031746
+
+Running with injections at output with prob: 2
+
+Injector initialized.
+Error probability: 0.01
+Data type: torch.float16
+Error model: bit
+Processing high_school_computer_science: 100%|██████████| 100/100 [05:31<00:00,  3.32s/it]
+MMLU Task Accuracy (task=high_school_computer_science): 0.25
+Processing astronomy: 100%|██████████| 152/152 [08:18<00:00,  3.28s/it]
+MMLU Task Accuracy (task=astronomy): 0.17763157894736842
+Overall MMLU Accuracy: 0.20634920634920634
+Injected at output with prob: 2 | Score: 0.20634920634920634
+
+Running with injections at output with prob: 1
+
+Injector initialized.
+Error probability: 0.1
+Data type: torch.float16
+Error model: bit
+Processing high_school_computer_science: 100%|██████████| 100/100 [06:04<00:00,  3.65s/it]
+MMLU Task Accuracy (task=high_school_computer_science): 0.27
+Processing astronomy: 100%|██████████| 152/152 [08:49<00:00,  3.49s/it]
+MMLU Task Accuracy (task=astronomy): 0.16447368421052633
+Overall MMLU Accuracy: 0.20634920634920634
+Injected at output with prob: 1 | Score: 0.20634920634920634

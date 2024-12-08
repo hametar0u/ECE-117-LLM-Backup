@@ -1,0 +1,99 @@
+Running with injections at embedding with prob: 7
+
+Parameters for phase 'embedding' have been written to mistral_target_embedding_7
+Injector initialized.
+Error probability: 1e-07
+Data type: torch.float16
+Error model: bit
+/kaggle/input/pytei-files/pytei.py:120: UserWarning: To copy construct from a tensor, it is recommended to use sourceTensor.clone().detach() or sourceTensor.clone().detach().requires_grad_(True), rather than torch.tensor(sourceTensor).
+  mask = torch.tensor((torch.rand(shape) < self.p).long(), dtype=dtype, device=self.device)
+Processing high_school_computer_science:   0%|          | 0/100 [00:00<?, ?it/s]/tmp/ipykernel_600/2414658023.py:41: PydanticDeprecatedSince20: The `schema` method is deprecated; use `model_json_schema` instead. Deprecated in Pydantic V2.0 to be removed in V3.0. See Pydantic V2 Migration Guide at https://errors.pydantic.dev/2.10/migration/
+  parser = JsonSchemaParser(schema.schema())
+Processing high_school_computer_science: 100%|██████████| 100/100 [07:16<00:00,  4.36s/it]
+MMLU Task Accuracy (task=high_school_computer_science): 0.57
+Processing astronomy: 100%|██████████| 152/152 [10:17<00:00,  4.06s/it]
+MMLU Task Accuracy (task=astronomy): 0.5328947368421053
+Overall MMLU Accuracy: 0.5476190476190477
+Injected at embedding with prob: 7 | Score: 0.5476190476190477
+
+Running with injections at embedding with prob: 6
+
+Parameters for phase 'embedding' have been written to mistral_target_embedding_6
+Injector initialized.
+Error probability: 1e-06
+Data type: torch.float16
+Error model: bit
+Processing astronomy: 100%|██████████| 152/152 [10:27<00:00,  4.13s/it]<00:35,  4.49s/it]
+MMLU Task Accuracy (task=astronomy): 0.625
+Overall MMLU Accuracy: 0.6111111111111112
+Injected at embedding with prob: 6 | Score: 0.6111111111111112
+
+Running with injections at embedding with prob: 5
+
+Parameters for phase 'embedding' have been written to mistral_target_embedding_5
+Injector initialized.
+Error probability: 1e-05
+Data type: torch.float16
+Error model: bit
+Processing high_school_computer_science: 100%|██████████| 100/100 [07:55<00:00,  4.75s/it]
+MMLU Task Accuracy (task=high_school_computer_science): 0.43
+Processing astronomy: 100%|██████████| 152/152 [12:26<00:00,  4.91s/it]
+MMLU Task Accuracy (task=astronomy): 0.4144736842105263
+Overall MMLU Accuracy: 0.42063492063492064
+Injected at embedding with prob: 5 | Score: 0.42063492063492064
+
+Running with injections at embedding with prob: 4
+
+Parameters for phase 'embedding' have been written to mistral_target_embedding_4
+Injector initialized.
+Error probability: 0.0001
+Data type: torch.float16
+Error model: bit
+Processing high_school_computer_science: 100%|██████████| 100/100 [08:45<00:00,  5.25s/it]
+MMLU Task Accuracy (task=high_school_computer_science): 0.32
+Processing astronomy: 100%|██████████| 152/152 [13:24<00:00,  5.29s/it]
+MMLU Task Accuracy (task=astronomy): 0.19078947368421054
+Overall MMLU Accuracy: 0.24206349206349206
+Injected at embedding with prob: 4 | Score: 0.24206349206349206
+
+Running with injections at embedding with prob: 3
+
+Parameters for phase 'embedding' have been written to mistral_target_embedding_3
+Injector initialized.
+Error probability: 0.001
+Data type: torch.float16
+Error model: bit
+Processing high_school_computer_science: 100%|██████████| 100/100 [08:16<00:00,  4.97s/it]
+MMLU Task Accuracy (task=high_school_computer_science): 0.28
+Processing astronomy: 100%|██████████| 152/152 [12:25<00:00,  4.91s/it]
+MMLU Task Accuracy (task=astronomy): 0.19078947368421054
+Overall MMLU Accuracy: 0.2261904761904762
+Injected at embedding with prob: 3 | Score: 0.2261904761904762
+
+Running with injections at embedding with prob: 2
+
+Parameters for phase 'embedding' have been written to mistral_target_embedding_2
+Injector initialized.
+Error probability: 0.01
+Data type: torch.float16
+Error model: bit
+Processing high_school_computer_science: 100%|██████████| 100/100 [08:19<00:00,  5.00s/it]
+MMLU Task Accuracy (task=high_school_computer_science): 0.27
+Processing astronomy: 100%|██████████| 152/152 [12:36<00:00,  4.97s/it]
+MMLU Task Accuracy (task=astronomy): 0.21710526315789475
+Overall MMLU Accuracy: 0.23809523809523808
+Injected at embedding with prob: 2 | Score: 0.23809523809523808
+
+Running with injections at embedding with prob: 1
+
+Parameters for phase 'embedding' have been written to mistral_target_embedding_1
+Injector initialized.
+Error probability: 0.1
+Data type: torch.float16
+Error model: bit
+Processing astronomy: 100%|██████████| 152/152 [15:44<00:00,  6.21s/it]<01:08,  6.26s/it]
+/opt/conda/lib/python3.10/site-packages/accelerate/utils/modeling.py:1390: UserWarning: Current model requires 4096 bytes of buffer for offloaded layers, which seems does not fit any GPU's remaining memory. If you are experiencing a OOM later, please consider using offload_buffers=True.
+  warnings.warn(
+MMLU Task Accuracy (task=astronomy): 0.29605263157894735
+Overall MMLU Accuracy: 0.2896825396825397
+Injected at embedding with prob: 1 | Score: 0.2896825396825397

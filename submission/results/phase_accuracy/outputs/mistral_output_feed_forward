@@ -1,0 +1,13 @@
+Injected at feed_forward with prob: 7 | Score: 0.5476190476190477 | Injected Count: 563.7144576
+Injected at feed_forward with prob: 6 | Score: 0.5476190476190477 | Injected Count: 5637.144576
+Injected at feed_forward with prob: 5 | Score: 0.23809523809523808 | Injected Count: 56371.44576
+Injected at feed_forward with prob: 4 | Score: 0.2896825396825397 | Injected Count: 563714.4576
+Injected at feed_forward with prob: 3 | Score: 0.2896825396825397 | Injected Count: 5637144.576
+Injected at feed_forward with prob: 2 | Score: 0.26587301587301587 | Injected Count: 56371445.76
+Injected at feed_forward with prob: 1 | Score: 0.2698412698412698 | Injected Count: 563714457.6
+
+Total parameters: 5637144576
+Total weights: 96
+
+Baseline Benchmark Score: 0.5793650793650794
+ 

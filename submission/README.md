@@ -12,4 +12,4 @@ This submission directory is organized as follows:
     conda env create --name PyTEI --file=requirements.yml
     conda activate PyTEI
  ```
- - Run `fork-of-injectornotebook.ipynb`
+ - Run `error_injection.ipynb`

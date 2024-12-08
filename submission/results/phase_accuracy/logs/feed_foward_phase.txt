@@ -1,0 +1,102 @@
+Parameters for phase 'feed_forward' have been written to mistral_target_feed_forward
+Running with injections at feed_forward with prob: 7
+
+Injector initialized.
+Error probability: 1e-07
+Data type: torch.float16
+Error model: bit
+/kaggle/input/pytei-files/pytei.py:120: UserWarning: To copy construct from a tensor, it is recommended to use sourceTensor.clone().detach() or sourceTensor.clone().detach().requires_grad_(True), rather than torch.tensor(sourceTensor).
+  mask = torch.tensor((torch.rand(shape) < self.p).long(), dtype=dtype, device=self.device)
+Processing high_school_computer_science:   0%|          | 0/100 [00:00<?, ?it/s]/tmp/ipykernel_194/2414658023.py:41: PydanticDeprecatedSince20: The `schema` method is deprecated; use `model_json_schema` instead. Deprecated in Pydantic V2.0 to be removed in V3.0. See Pydantic V2 Migration Guide at https://errors.pydantic.dev/2.10/migration/
+  parser = JsonSchemaParser(schema.schema())
+Processing high_school_computer_science: 100%|██████████| 100/100 [07:30<00:00,  4.51s/it]
+MMLU Task Accuracy (task=high_school_computer_science): 0.56
+Processing astronomy: 100%|██████████| 152/152 [10:37<00:00,  4.19s/it]
+MMLU Task Accuracy (task=astronomy): 0.5394736842105263
+Overall MMLU Accuracy: 0.5476190476190477
+Injected at feed_forward with prob: 7 | Score: 0.5476190476190477
+
+Running with injections at feed_forward with prob: 6
+
+Injector initialized.
+Error probability: 1e-06
+Data type: torch.float16
+Error model: bit
+Processing astronomy: 100%|██████████| 152/152 [10:32<00:00,  4.16s/it]<01:24,  4.21s/it]
+MMLU Task Accuracy (task=astronomy): 0.5460526315789473
+Overall MMLU Accuracy: 0.5476190476190477
+Injected at feed_forward with prob: 6 | Score: 0.5476190476190477
+
+Running with injections at feed_forward with prob: 5
+
+Injector initialized.
+Error probability: 1e-05
+Data type: torch.float16
+Error model: bit
+Processing high_school_computer_science: 100%|██████████| 100/100 [08:45<00:00,  5.25s/it]
+MMLU Task Accuracy (task=high_school_computer_science): 0.22
+Processing astronomy: 100%|██████████| 152/152 [12:58<00:00,  5.12s/it]
+MMLU Task Accuracy (task=astronomy): 0.25
+Overall MMLU Accuracy: 0.23809523809523808
+Injected at feed_forward with prob: 5 | Score: 0.23809523809523808
+
+Running with injections at feed_forward with prob: 4
+
+Injector initialized.
+Error probability: 0.0001
+Data type: torch.float16
+Error model: bit
+Processing high_school_computer_science: 100%|██████████| 100/100 [05:39<00:00,  3.40s/it]
+MMLU Task Accuracy (task=high_school_computer_science): 0.3
+Processing astronomy: 100%|██████████| 152/152 [08:25<00:00,  3.33s/it]
+MMLU Task Accuracy (task=astronomy): 0.28289473684210525
+Overall MMLU Accuracy: 0.2896825396825397
+Injected at feed_forward with prob: 4 | Score: 0.2896825396825397
+
+Running with injections at feed_forward with prob: 3
+
+Injector initialized.
+Error probability: 0.001
+Data type: torch.float16
+Error model: bit
+Processing high_school_computer_science: 100%|██████████| 100/100 [05:43<00:00,  3.44s/it]
+MMLU Task Accuracy (task=high_school_computer_science): 0.29
+Processing astronomy: 100%|██████████| 152/152 [08:40<00:00,  3.42s/it]
+MMLU Task Accuracy (task=astronomy): 0.2894736842105263
+Overall MMLU Accuracy: 0.2896825396825397
+Injected at feed_forward with prob: 3 | Score: 0.2896825396825397
+
+Running with injections at feed_forward with prob: 2
+
+Injector initialized.
+Error probability: 0.01
+Data type: torch.float16
+Error model: bit
+Processing high_school_computer_science: 100%|██████████| 100/100 [05:43<00:00,  3.44s/it]
+MMLU Task Accuracy (task=high_school_computer_science): 0.22
+Processing astronomy: 100%|██████████| 152/152 [08:32<00:00,  3.37s/it]
+MMLU Task Accuracy (task=astronomy): 0.29605263157894735
+Overall MMLU Accuracy: 0.26587301587301587
+Injected at feed_forward with prob: 2 | Score: 0.26587301587301587
+
+Running with injections at feed_forward with prob: 1
+
+Injector initialized.
+Error probability: 0.1
+Data type: torch.float16
+Error model: bit
+Processing high_school_computer_science: 100%|██████████| 100/100 [05:53<00:00,  3.53s/it]
+MMLU Task Accuracy (task=high_school_computer_science): 0.3
+Processing astronomy: 100%|██████████| 152/152 [08:55<00:00,  3.52s/it]
+MMLU Task Accuracy (task=astronomy): 0.25
+Overall MMLU Accuracy: 0.2698412698412698
+Injected at feed_forward with prob: 1 | Score: 0.2698412698412698
+
+Loading widget...
+Parameters for phase 'normalization' have been written to mistral_target_normalization
+Running with injections at normalization with prob: 7
+
+Injector initialized.
+Error probability: 1e-07
+Data type: torch.float16
+Error model: bit

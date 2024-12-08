@@ -1,0 +1,84 @@
+Parameters for phase 'normalization' have been written to mistral_target_normalization
+Running with injections at normalization with prob: 7
+
+Injector initialized.
+Error probability: 1e-07
+Data type: torch.float16
+Error model: bit
+/kaggle/input/pytei-files/pytei.py:120: UserWarning: To copy construct from a tensor, it is recommended to use sourceTensor.clone().detach() or sourceTensor.clone().detach().requires_grad_(True), rather than torch.tensor(sourceTensor).
+  mask = torch.tensor((torch.rand(shape) < self.p).long(), dtype=dtype, device=self.device)
+Processing high_school_computer_science:   0%|          | 0/100 [00:00<?, ?it/s]/tmp/ipykernel_337/2414658023.py:41: PydanticDeprecatedSince20: The `schema` method is deprecated; use `model_json_schema` instead. Deprecated in Pydantic V2.0 to be removed in V3.0. See Pydantic V2 Migration Guide at https://errors.pydantic.dev/2.10/migration/
+  parser = JsonSchemaParser(schema.schema())
+Processing high_school_computer_science: 100%|██████████| 100/100 [07:10<00:00,  4.31s/it]
+MMLU Task Accuracy (task=high_school_computer_science): 0.63
+Processing astronomy: 100%|██████████| 152/152 [10:14<00:00,  4.04s/it]
+MMLU Task Accuracy (task=astronomy): 0.5657894736842105
+Overall MMLU Accuracy: 0.5912698412698413
+Injected at normalization with prob: 7 | Score: 0.5912698412698413
+
+Running with injections at normalization with prob: 6
+
+Injector initialized.
+Error probability: 1e-06
+Data type: torch.float16
+Error model: bit
+Processing high_school_computer_science: 100%|██████████| 100/100 [07:00<00:00,  4.21s/it]
+MMLU Task Accuracy (task=high_school_computer_science): 0.56
+Processing astronomy: 100%|██████████| 152/152 [10:07<00:00,  4.00s/it]
+MMLU Task Accuracy (task=astronomy): 0.5986842105263158
+Overall MMLU Accuracy: 0.5833333333333334
+Injected at normalization with prob: 6 | Score: 0.5833333333333334
+
+Running with injections at normalization with prob: 5
+
+Injector initialized.
+Error probability: 1e-05
+Data type: torch.float16
+Error model: bit
+Processing high_school_computer_science: 100%|██████████| 100/100 [07:06<00:00,  4.26s/it]
+MMLU Task Accuracy (task=high_school_computer_science): 0.56
+Processing astronomy: 100%|██████████| 152/152 [10:08<00:00,  4.01s/it]
+MMLU Task Accuracy (task=astronomy): 0.5723684210526315
+Overall MMLU Accuracy: 0.5674603174603174
+Injected at normalization with prob: 5 | Score: 0.5674603174603174
+
+Running with injections at normalization with prob: 4
+
+Injector initialized.
+Error probability: 0.0001
+Data type: torch.float16
+Error model: bit
+Processing high_school_computer_science: 100%|██████████| 100/100 [07:11<00:00,  4.32s/it]
+MMLU Task Accuracy (task=high_school_computer_science): 0.54
+Processing astronomy: 100%|██████████| 152/152 [10:08<00:00,  4.00s/it]
+MMLU Task Accuracy (task=astronomy): 0.5921052631578947
+Overall MMLU Accuracy: 0.5714285714285714
+Injected at normalization with prob: 4 | Score: 0.5714285714285714
+
+Running with injections at normalization with prob: 3
+
+Injector initialized.
+Error probability: 0.001
+Data type: torch.float16
+Error model: bit
+Processing high_school_computer_science: 100%|██████████| 100/100 [07:02<00:00,  4.22s/it]
+MMLU Task Accuracy (task=high_school_computer_science): 0.53
+Processing astronomy: 100%|██████████| 152/152 [10:08<00:00,  4.00s/it]
+MMLU Task Accuracy (task=astronomy): 0.6052631578947368
+Overall MMLU Accuracy: 0.5753968253968254
+Injected at normalization with prob: 3 | Score: 0.5753968253968254
+
+Running with injections at normalization with prob: 2
+
+Injector initialized.
+Error probability: 0.01
+Data type: torch.float16
+Error model: bit
+Processing high_school_computer_science: 100%|██████████| 100/100 [07:06<00:00,  4.27s/it]
+MMLU Task Accuracy (task=high_school_computer_science): 0.58
+Processing high_school_computer_science: 100%|██████████| 100/100 [07:09<00:00,  4.29s/it]
+MMLU Task Accuracy (task=high_school_computer_science): 0.38
+Processing astronomy: 100%|██████████| 152/152 [09:52<00:00,  3.90s/it]
+MMLU Task Accuracy (task=astronomy): 0.3881578947368421
+Overall MMLU Accuracy: 0.38492063492063494
+Injected at normalization with prob: 1 | Score: 0.38492063492063494

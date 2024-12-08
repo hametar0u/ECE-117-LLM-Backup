@@ -1,0 +1,12 @@
+Injected at normalization with prob: 7 | Score: 0.5912698412698413 | Injected Count: .0266240
+Injected at normalization with prob: 6 | Score: 0.5833333333333334 | Injected Count: .266240
+Injected at normalization with prob: 5 | Score: 0.5674603174603174 | Injected Count: 2.66240
+Injected at normalization with prob: 4 | Score: 0.5714285714285714 | Injected Count: 26.6240
+Injected at normalization with prob: 3 | Score: 0.5753968253968254 | Injected Count: 266.240
+Injected at normalization with prob: 2 | Score: 0.5674603174603174 | Injected Count: 2662.40
+Injected at normalization with prob: 1 | Score: 0.38492063492063494 | Injected Count: 26624.0
+
+Total parameters: 266240
+Total weights: 65
+
+Baseline Benchmark Score: 0.5793650793650794

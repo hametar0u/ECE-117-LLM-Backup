@@ -10,21 +10,31 @@ An interesting part of this paper is the evaluation of possible mitigations agai
 
 
 \section{Threat model.}
-We present 2 case studies, relating to information disclosure and denial of service respectively. \\
-
 An attacker's goal is to cause information disclosure or cause a denial of service via system crash or significantly degrading the performance of the LLM. They may attack components such as edge AI chips and accelerators, CPUs and GPUs in LLM training, memory systems storing model weights, and data transfer channels between hardware components. To induce hardware errors, they could somehow achieve write access to memory systems, or physical access to create fault-heavy environments (e.g. radiation source). 
 
 \subsection{Case Studies}
-case 1 (information disclosure): An LLM is running on an edge device (like a smartwatch). The attacker jailbreaks the device, gaining write access to hardware, and inject bit errors with a probability $p$. The attacker then monitors the LLM output through API calls, observing that the output is NaN XX\% of the time. The attacker thus concludes that the LLM has YY number of parameters (see \ref{sec:nan} for more details). \\
+We present 2 case studies, relating to information disclosure and denial of service respectively. However, for the purposes of this paper, we will investigate the effects of the \textit{denial of service} attack objective, specifically performance degradation only.
 
-case 2 (denial of service): A physics research lab is using LLMs for running simulations of their experiments. An attacker somehow manages to convince the lab scientists to house the servers the LLM is running on in their reactor chamber, a source with high radiation. This environment causes many bit flip errors, causing frequent faulty outputs from the LLM.
+\subsubsection{Case 1 (Information Disclosure)} An LLM is running on an edge device (like a smartwatch). The attacker jailbreaks the device, gaining write access to hardware, and inject bit errors with a probability $p$. The attacker then monitors the LLM output through API calls, observing that the output is NaN XX\% of the time. The attacker thus concludes that the LLM has YY number of parameters (see \ref{sec:nan} for more details).
 
-For the purposes of this paper, we will investigate the effects of the denial of service attack objective, specifically performance degradation.
+\subsubsection{Case 2 (Denial of Service)} A physics research lab is using LLMs for running simulations of their experiments. An attacker somehow manages to convince the lab scientists to house the servers the LLM is running on in their reactor chamber, a source with high radiation. This environment causes many bit flip errors, causing frequent faulty outputs from the LLM.
 
-
-\textcolor{red}{jeffrey todo: make a figure of the threat model}
-
-
+\begin{figure}[!htbp]
+    \centering
+    \begin{subfigure}[b]{\linewidth}
+        \centering
+        \includegraphics[width=1.0\linewidth]{images/threat-case-1.png}
+        \caption{Case 1 (Information Disclosure)}
+    \end{subfigure}
+    \vspace{1cm}
+    \begin{subfigure}[b]{\linewidth}
+        \centering
+        \includegraphics[width=1.0\linewidth]{images/threat-case-2.png}
+        \caption{Case 2 (Denial of Service)}
+    \end{subfigure}
+    \caption{Threat models for case studies}
+    \label{fig:threatcases}
+\end{figure}
 
 \section{Overview of the design}
 \label{sec:overview}

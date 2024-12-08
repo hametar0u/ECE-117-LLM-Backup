@@ -15,6 +15,8 @@ is likely for any large amount of bit errors. In float16 representation, the err
 The final case is int4 quantization. Here, bit errors actually tend to be fine. In addition, random bit errors here are close to random value errors, which justifies our choice to look at
 random value errors instead.
 
+\textit{Aside on RMSE:} We also tried to use RMSE between the output logits of the target and corrupted model as a metric for evaluation. However, each question in the MMLU benchmark is multiple-choice with 4 options and expects only a single new output token. With only 1 new token, RMSE is impractical as a metric for such a benchmark. However, it should be noted that RMSE would be more interesting with an open-ended question answering or text generation benchmark. This can give us greater insight into how the errors in each layer are affecting the model's inference capabilities since RMSE is more sensitive to deviations. Moreover, RMSE will also provide a more robust outlook on the effects of error injection since it is relatively benchmark independent.
+
 \section{Conclusion}
 \label{sec:conclusion}
 The large takeaway is that all value errors are certainly not equal. It seems that errors in earlier levels tend to degrade the power of our LLM significantly more than errors at later levels.
@@ -28,11 +30,13 @@ the larger case of completely random bit errors.
 More research is needed for all the above mentioned cases to draw stronger conclusions on the security of LLM's to random bit flips.
 
 \section{Contributions of each teammate}
-Abhi worked on the notebook for injecting errors by component, performed the runs for this experiment on Kaggle, and performed the analysis of the results. Abhi also modified the error injection library to output the number of injected parameters. Abhi wrote sections \textbf{4.2 Design Approaches} and \textbf{6.3 Variation by Component} of this report.
+\textit{Abhi} worked on the notebook for injecting errors by component, performed the runs for this experiment on Kaggle, and performed the analysis of the results. Abhi also modified the error injection library to output the number of injected parameters. Abhi wrote sections \textbf{4.2 Design Approaches} and \textbf{6.3 Variation by Component} of this report.
 
-Allen developed the notebook for running the experiments and ran runs of the experiment on Kaggle. He wrote sections \textbf{1 Introduction}, \textbf{5.3 Evaluation Framework}, \textbf{6.2 Variation by Layer}, \textbf{7 Discussions} and \textbf{8 Conclusion}.
+\textit{Allen} developed the notebook for running the experiments and ran runs of the experiment on Kaggle. He wrote sections \textbf{1 Introduction}, \textbf{5.3 Evaluation Framework}, \textbf{6.2 Variation by Layer}, \textbf{7 Discussions} and \textbf{8 Conclusion}.
 
-Jeffrey implemented the initial code for LLM inference, and ran some of the experiments. He also wrote sections \textbf{3 Threat Model}, \textbf{4.1 Design Choices}, \textbf{6.1 NaN Analysis} and part of \textbf{2 Background and Related Work}.
+\textit{Jeffrey} implemented the initial code for LLM inference, and ran some of the experiments. He also wrote sections \textbf{3 Threat Model}, \textbf{4.1 Design Choices}, \textbf{6.1 NaN Analysis} and part of \textbf{2 Background and Related Work}.
+
+\textit{Arnav} implemented the benchmarking framework code using DeepEval and investigated using RMSE as a metric for evaluation. He wrote sections \textbf{5.2 Evaluation} and parts of \textbf{7 Discussions}.
 %%% Local Variables:
 %%% mode: latex
 %%% TeX-master: "main"

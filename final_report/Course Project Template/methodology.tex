@@ -24,7 +24,7 @@ Each float in the parameter tensor is still corrupted independently with a speci
 \subsubsection{MMLU Benchmark}
 We evaluate our perturbed models on the Massive Multitask Language Understanding (MMLU) Benchmark. The MMLU Benchmark contains 15908 questions over 57 subjects. The difficulty of the questions ranges from an elementary level to an advanced professional level\cite{hendrycks2021measuringmassivemultitasklanguage}. 
 
-For our particular evaluation framework, we narrowed the scope of our evaluation to the High School Computer Science and Astronomy tasks. The scope was narrowed from 57 tasks to 2 tasks due to the excessive computational costs required to run 15908 instances of inference on each perturbed model. These particular tasks were chosen since they provide around average performance (\ref{fig:mmlu-tasks}) without exceeding the input token limit for GPT-2 and Mistral 7B.
+For our particular evaluation framework, we narrowed the scope of our evaluation to the High School Computer Science and Astronomy tasks. The scope was narrowed from 57 tasks to 2 tasks due to the excessive computational costs required to run 15908 instances of inference on each perturbed model. These particular tasks were chosen since they provide around average performance (as seen in Figure \ref{fig:mmlu-tasks}) without exceeding the input token limit for GPT-2 and Mistral 7B.
 \begin{figure}
         \centering
         \includegraphics[width=0.75\linewidth]{images/mmlu-task-performance.png}
@@ -65,7 +65,7 @@ The MMLU Benchmarking class takes as input a model, and a set of tasks to run. I
         \Return total\_correct / total\_qs\;
 }
 \end{algorithm}
-In \ref{alg:eval}, the function \verb|format_input| uses a specific template to format the input to instruct the LLM to correctly answer the question in a specific format. Also, \verb|model.generate()| refers to a generic function to generate output tokens from an LLM given some set of input tokens. 
+In Algorithm: \ref{alg:eval}, the function \verb|format_input| uses a specific template to format the input to instruct the LLM to correctly answer the question in a specific format. Also, \verb|model.generate()| refers to a generic function to generate output tokens from an LLM given some set of input tokens. 
 
 \subsubsection{Exact Match Metric}
 For this evaluation framework and benchmark, we use an exact-match metric. This is a popular metric that outputs a binary result where the input is penalized if it is not an exact match to the target. In this case, we compare the output token(s) to the target, and if it is not an exact match, we return \verb|false|.
